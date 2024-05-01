@@ -25,7 +25,7 @@ export default function Navbar() {
   const [active, setActive] = useState(0);
 
   return (
-    <nav className={classes.navbar}>
+    <nav className={`${classes.navbar} shadow-md`}>
       <div className={classes.navbarMain}>
         <Stack justify="center" gap={0}>
           {navLists.map((link, idx) => (
