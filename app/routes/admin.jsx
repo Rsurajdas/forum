@@ -1,11 +1,9 @@
-import { Outlet } from '@remix-run/react';
-import Header from '../components/client/Header';
-import Navbar from '../components/dashboard/Navbar';
+import { Outlet } from "@remix-run/react";
+import Navbar from "../components/dashboard/Navbar";
 
 export default function DashboardPage() {
   return (
     <>
-      <Header />
       <main className="flex">
         <Navbar />
         <div className="content w-full">

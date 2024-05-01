@@ -4,10 +4,11 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from '@remix-run/react';
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-import '@mantine/core/styles.css';
-import tailwindStyles from './styles/tailwind.css?url';
+} from "@remix-run/react";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
+import tailwindStyles from "./styles/tailwind.css?url";
+import Header from "./components/client/Header";
 
 export function Layout({ children }) {
   return (
@@ -20,6 +21,7 @@ export function Layout({ children }) {
         <ColorSchemeScript />
       </head>
       <body className="bg-stone-50">
+        <Header />
         <MantineProvider>{children}</MantineProvider>
         <ScrollRestoration />
         <Scripts />
@@ -32,4 +34,4 @@ export default function App() {
   return <Outlet />;
 }
 
-export const links = () => [{ rel: 'stylesheet', href: tailwindStyles }];
+export const links = () => [{ rel: "stylesheet", href: tailwindStyles }];

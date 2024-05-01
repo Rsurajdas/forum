@@ -6,19 +6,19 @@ import {
   IconMessageDots,
   IconSettings,
   IconUsers,
-} from '@tabler/icons-react';
-import classes from '../../styles/Navbar.module.css';
-import NavbarLink from './NavbarLink';
-import { useState } from 'react';
-import { Stack } from '@mantine/core';
+} from "@tabler/icons-react";
+import classes from "../../styles/Navbar.module.css";
+import NavbarLink from "./NavbarLink";
+import { useState } from "react";
+import { Stack } from "@mantine/core";
 
 const navLists = [
-  { icon: IconDashboard, label: 'Dashboard', path: '/dashboard' },
-  { icon: IconListTree, label: 'Forums', path: '/forums' },
-  { icon: IconMessage, label: 'Topics', path: '/topics' },
-  { icon: IconMessageDots, label: 'Posts', path: '/posts' },
-  { icon: IconUsers, label: 'Users', path: '/users' },
-  { icon: IconSettings, label: 'Settings', path: '/settings' },
+  { icon: IconDashboard, label: "Dashboard", path: "/admin/dashboard" },
+  { icon: IconListTree, label: "Forums", path: "/admin/forums" },
+  { icon: IconMessage, label: "Topics", path: "/admin/topics" },
+  { icon: IconMessageDots, label: "Posts", path: "/admin/posts" },
+  { icon: IconUsers, label: "Users", path: "/admin/users" },
+  { icon: IconSettings, label: "Settings", path: "/admin/settings" },
 ];
 
 export default function Navbar() {
