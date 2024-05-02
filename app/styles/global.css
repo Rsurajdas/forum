@@ -1,3 +1,12 @@
-.mantine-Table-table {
+.mantine-Table-table,
+.mantine-Accordion-content {
   background-color: #fff;
+}
+.mantine-Accordion-control[data-active='true'] {
+  background-color: var(--mantine-color-lime-1);
+}
+.mantine-Accordion-item {
+  /* margin-bottom: 1rem; */
+  background-color: #fff !important;
+  border: 1px solid #dee2e6 !important;
 }

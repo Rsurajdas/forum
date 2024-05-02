@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Table, Checkbox, Avatar, Button, Title } from '@mantine/core';
-import styles from '../styles/global.css?url';
 
 const elements = [
   {
@@ -104,5 +103,3 @@ export default function DashboardTopicsPage() {
     </>
   );
 }
-
-export const links = () => [{ rel: 'stylesheet', href: styles }];

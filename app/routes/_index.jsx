@@ -1,34 +1,86 @@
-import { Accordion } from "@mantine/core";
-import { IconFolder } from "@tabler/icons-react";
-import { useState } from "react";
+import { Accordion } from '@mantine/core';
+import { IconFolder } from '@tabler/icons-react';
+import { useState } from 'react';
+import ForumList from '../components/client/ForumList';
 
 export const meta = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: 'New Remix App' },
+    { name: 'description', content: 'Welcome to Remix!' },
   ];
 };
 
 const groceries = [
   {
-    value: "Apples",
-    description:
-      "Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.",
+    folder: 'Community',
+    forums: [
+      {
+        id: '1',
+        title: 'Pre-Sales Questions',
+        description: 'Any pre-sales questions are welcome here!',
+        topics: 3,
+        posts: 5,
+      },
+      {
+        id: '2',
+        title: 'General Discussion',
+        description:
+          'Talk about all things regarding Our products and e-commerce',
+        topics: 0,
+        posts: 0,
+      },
+      {
+        id: '3',
+        title: 'Announcements',
+        description: 'News, Announcements, Promotions',
+        topics: 2,
+        posts: 3,
+      },
+    ],
   },
   {
-    value: "Bananas",
-    description:
-      "Naturally sweet and potassium-rich fruit. Bananas are a popular choice for their energy-boosting properties and can be enjoyed as a quick snack, added to smoothies, or used in baking.",
+    folder: 'Purchase Support',
+    forums: [
+      {
+        id: '1',
+        title: 'Request and Wishlist',
+        description: 'What products would you like to buy.',
+        topics: 0,
+        posts: 0,
+      },
+      {
+        id: '2',
+        title: 'Shipping, payment and warranty',
+        description: 'All about shipping, payment and warranty',
+        topics: 0,
+        posts: 0,
+      },
+      {
+        id: '3',
+        title: 'Customer Center',
+        description:
+          'Only for customers who have purchased the product at the store',
+        topics: 0,
+        posts: 0,
+      },
+    ],
   },
   {
-    value: "Broccoli",
-    description:
-      "Nutrient-packed green vegetable. Broccoli is packed with vitamins, minerals, and fiber. It has a distinct flavor and can be enjoyed steamed, roasted, or added to stir-fries.",
+    folder: 'New launch',
+    forums: [
+      {
+        id: '1',
+        title: 'Test Forum',
+        description: 'Test Description',
+        topics: 1,
+        posts: 1,
+      },
+    ],
   },
 ];
 
 export default function Index() {
-  const [value, setValue] = useState(["Apples"]);
+  const [folder, setFolder] = useState(['Community']);
   return (
     <>
       <main>
@@ -37,18 +89,23 @@ export default function Index() {
             <div className="flex">
               <div className="w-2/3">
                 <Accordion
-                  variant="contained"
+                  variant="separated"
                   disableChevronRotation
-                  value={value}
-                  className="bg-white"
-                  onChange={setValue}
+                  value={folder}
+                  onChange={setFolder}
                 >
                   {groceries.map((item) => (
-                    <Accordion.Item key={item.value} value={item.value}>
+                    <Accordion.Item key={item.folder} value={item.folder}>
                       <Accordion.Control icon={<IconFolder />}>
-                        {item.value}
+                        {item.folder}
                       </Accordion.Control>
-                      <Accordion.Panel>{item.description}</Accordion.Panel>
+                      <Accordion.Panel>
+                        <div className="flex flex-col gap-4">
+                          {item.forums.map((forum) => (
+                            <ForumList key={forum.id} {...forum} />
+                          ))}
+                        </div>
+                      </Accordion.Panel>
                     </Accordion.Item>
                   ))}
                 </Accordion>

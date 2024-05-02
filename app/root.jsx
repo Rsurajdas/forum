@@ -4,11 +4,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
-import "@mantine/core/styles.css";
-import tailwindStyles from "./styles/tailwind.css?url";
-import Header from "./components/client/Header";
+} from '@remix-run/react';
+import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import '@mantine/core/styles.css';
+import tailwindStyles from './styles/tailwind.css?url';
+import Header from './components/client/Header';
+import globalStyles from './styles/global.css?url';
 
 export function Layout({ children }) {
   return (
@@ -34,4 +35,7 @@ export default function App() {
   return <Outlet />;
 }
 
-export const links = () => [{ rel: "stylesheet", href: tailwindStyles }];
+export const links = () => [
+  { rel: 'stylesheet', href: tailwindStyles },
+  { rel: 'stylesheet', href: globalStyles },
+];
