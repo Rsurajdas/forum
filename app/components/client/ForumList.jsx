@@ -1,4 +1,5 @@
 import { Link } from '@remix-run/react';
+import DetailLabel from './DetailLabel';
 
 export default function ForumList({
   title,
@@ -17,15 +18,9 @@ export default function ForumList({
         <p className="text-gray-500">{description}</p>
       </div>
       <div className="w-1/6">
-        <div className="flex gap-4 text-center justify-end">
-          <div className="flex flex-col">
-            <span className="font-semibold">{topics}</span>
-            <span className="text-gray-500">Topics</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="font-semibold">{posts}</span>
-            <span className="text-gray-500">Posts</span>
-          </div>
+        <div className="flex gap-4 justify-end">
+          <DetailLabel value={topics} title="Topics" />
+          <DetailLabel value={posts} title="Posts" />
         </div>
       </div>
     </div>
