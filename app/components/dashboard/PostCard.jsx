@@ -16,6 +16,7 @@ export default function PostCard({
   postDate,
   postContent,
   forumName,
+  isAdmin,
 }) {
   return (
     <div className="shadow-md bg-white rounded-md">
@@ -47,84 +48,92 @@ export default function PostCard({
         <div className="font-semibold">
           Posted in <span className="text-blue-800">{forumName}</span>
         </div>
-        <div className="flex gap-3">
-          <Tooltip
-            label="Hide"
-            position="bottom"
-            transitionProps={{ duration: 0 }}
-          >
-            <ActionIcon
-              variant="filled"
-              color="dark"
-              aria-label="Settings"
-              size="lg"
+        {isAdmin && (
+          <div className="flex gap-3">
+            <Tooltip
+              label="Hide"
+              position="bottom"
+              transitionProps={{ duration: 0 }}
             >
-              <IconEyeCancel
-                style={{ width: '70%', height: '70%' }}
-                stroke={1.5}
-              />
-            </ActionIcon>
-          </Tooltip>
-          <Tooltip
-            label="Spam"
-            position="bottom"
-            transitionProps={{ duration: 0 }}
-          >
-            <ActionIcon
-              variant="filled"
-              color="orange"
-              aria-label="Settings"
-              size="lg"
+              <ActionIcon
+                variant="filled"
+                color="dark"
+                aria-label="Settings"
+                size="lg"
+              >
+                <IconEyeCancel
+                  style={{ width: '70%', height: '70%' }}
+                  stroke={1.5}
+                />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip
+              label="Spam"
+              position="bottom"
+              transitionProps={{ duration: 0 }}
             >
-              <IconShieldX
-                style={{ width: '70%', height: '70%' }}
-                stroke={1.5}
-              />
-            </ActionIcon>
-          </Tooltip>
-          <Tooltip
-            label="View"
-            position="bottom"
-            transitionProps={{ duration: 0 }}
-          >
-            <ActionIcon
-              variant="filled"
-              color="cyan"
-              aria-label="Settings"
-              size="lg"
+              <ActionIcon
+                variant="filled"
+                color="orange"
+                aria-label="Settings"
+                size="lg"
+              >
+                <IconShieldX
+                  style={{ width: '70%', height: '70%' }}
+                  stroke={1.5}
+                />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip
+              label="View"
+              position="bottom"
+              transitionProps={{ duration: 0 }}
             >
-              <IconEye style={{ width: '70%', height: '70%' }} stroke={1.5} />
-            </ActionIcon>
-          </Tooltip>
-          <Tooltip
-            label="Edit"
-            position="bottom"
-            transitionProps={{ duration: 0 }}
-          >
-            <ActionIcon
-              variant="filled"
-              color="blue"
-              aria-label="Settings"
-              size="lg"
+              <ActionIcon
+                variant="filled"
+                color="cyan"
+                aria-label="Settings"
+                size="lg"
+              >
+                <IconEye style={{ width: '70%', height: '70%' }} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip
+              label="Edit"
+              position="bottom"
+              transitionProps={{ duration: 0 }}
             >
-              <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
-            </ActionIcon>
-          </Tooltip>
-          <Tooltip
-            label="Delete"
-            position="bottom"
-            transitionProps={{ duration: 0 }}
-          >
-            <ActionIcon
-              variant="filled"
-              color="red"
-              aria-label="Settings"
-              size="lg"
+              <ActionIcon
+                variant="filled"
+                color="blue"
+                aria-label="Settings"
+                size="lg"
+              >
+                <IconEdit
+                  style={{ width: '70%', height: '70%' }}
+                  stroke={1.5}
+                />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip
+              label="Delete"
+              position="bottom"
+              transitionProps={{ duration: 0 }}
             >
-              <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
-            </ActionIcon>
-          </Tooltip>
-        </div>
+              <ActionIcon
+                variant="filled"
+                color="red"
+                aria-label="Settings"
+                size="lg"
+              >
+                <IconTrash
+                  style={{ width: '70%', height: '70%' }}
+                  stroke={1.5}
+                />
+              </ActionIcon>
+            </Tooltip>
+          </div>
+        )}
       </div>
     </div>
   );

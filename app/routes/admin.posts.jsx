@@ -16,6 +16,7 @@ export default function DashboardPostsPage() {
           postContent="Forums allow people to create threads, post messages, and respond to existing threads. They can also be used to ask questions, share experiences, and debate solutions to shared problems."
           postDate="2 days ago"
           forumName="Test Forum"
+          isAdmin={true}
         />
         <PostCard
           topic="Test Topic"
@@ -25,6 +26,7 @@ export default function DashboardPostsPage() {
           postContent="Forums allow people to create threads, post messages, and respond to existing threads. They can also be used to ask questions, share experiences, and debate solutions to shared problems."
           postDate="2 days ago"
           forumName="Test Forum"
+          isAdmin={true}
         />
       </div>
     </>

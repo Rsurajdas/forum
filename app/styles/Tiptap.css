@@ -1,0 +1,86 @@
+.tiptap {
+  padding: 1rem;
+}
+.tiptap:focus {
+  outline: none;
+}
+.tiptap > * + * {
+  margin-top: 0.75em;
+}
+.tiptap ul,
+.tiptap ol {
+  padding: 0 1rem;
+}
+.tiptap ul {
+  list-style-type: disc;
+}
+.tiptap ol {
+  list-style-type: decimal;
+}
+.tiptap h1,
+.tiptap h2,
+.tiptap h3,
+.tiptap h4,
+.tiptap h5,
+.tiptap h6 {
+  font-weight: 600;
+}
+.tiptap h1 {
+  font-size: 2em;
+}
+.tiptap h2 {
+  font-size: 1.5em;
+}
+.tiptap h3 {
+  font-size: 1.17em;
+}
+.tiptap h4 {
+  font-size: 1em;
+}
+.tiptap h5 {
+  font-size: 0.83em;
+}
+.tiptap h6 {
+  font-size: 0.67em;
+}
+.bubble-menu {
+  display: flex;
+  background-color: #0d0d0d;
+  padding: 0.2rem;
+  border-radius: 0.5rem;
+}
+.bubble-menu button {
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0 0.2rem;
+  opacity: 0.6;
+}
+.bubble-menu button:hover,
+.bubble-menu button.is-active {
+  opacity: 1;
+}
+.floating-menu {
+  display: flex;
+  background-color: #0d0d0d10;
+  padding: 0.2rem;
+  border-radius: 0.5rem;
+}
+.floating-menu button {
+  border: none;
+  background: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0 0.2rem;
+  opacity: 0.6;
+}
+.floating-menu button:hover,
+.floating-menu button.is-active {
+  opacity: 1;
+}
+
+button.is-active {
+  background-color: #ecfccb;
+}
