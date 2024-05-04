@@ -54,7 +54,7 @@ export default function DashboardTopicsPage() {
               key={element.id}
               bg={
                 selectedRows.includes(element.id)
-                  ? 'var(--mantine-color-lime-light)'
+                  ? 'var(--mantine-color-indigo-light)'
                   : undefined
               }
             >
@@ -88,10 +88,10 @@ export default function DashboardTopicsPage() {
               <Table.Td>{element.date}</Table.Td>
               <Table.Td>
                 <div className="flex gap-2">
-                  <Button variant="default" color="lime">
+                  <Button variant="default" color="indigo">
                     View
                   </Button>
-                  <Button variant="default" color="lime">
+                  <Button variant="default" color="indigo">
                     Edit
                   </Button>
                 </div>

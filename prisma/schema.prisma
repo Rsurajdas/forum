@@ -14,13 +14,16 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  email        String   @unique
-  password     String
-  createdAt    DateTime @default(now())
-  lastLoggedin DateTime
-  profile      Profile?
-  profileId    String?  @db.ObjectId
+  id                    String    @id @default(auto()) @map("_id") @db.ObjectId
+  email                 String    @unique
+  password              String
+  passwordChangedAt     DateTime?
+  passwordResetToken    String?
+  passwordTokenExpireAt DateTime?
+  createdAt             DateTime  @default(now())
+  lastLoggedin          DateTime
+  profile               Profile?
+  profileId             String?   @db.ObjectId
 }
 
 model Profile {

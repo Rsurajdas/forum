@@ -14,7 +14,7 @@ export default function DashboardTabs() {
   const [activeTab, setActiveTab] = useState('one-day');
 
   return (
-    <Tabs value={activeTab} onChange={setActiveTab} color="lime">
+    <Tabs value={activeTab} onChange={setActiveTab} color="indigo">
       <Tabs.List>
         <Tabs.Tab value="one-day">24 Hours</Tabs.Tab>
         <Tabs.Tab value="30-day">30 Days</Tabs.Tab>

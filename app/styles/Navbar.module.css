@@ -31,8 +31,8 @@
   &:global(.active) {
     &,
     &:hover {
-      background-color: var(--mantine-color-lime-1);
-      color: var(--mantine-color-lime-9);
+      background-color: var(--mantine-color-indigo-1);
+      color: var(--mantine-color-indigo-9);
     }
   }
 }

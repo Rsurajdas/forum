@@ -35,7 +35,7 @@ export default function TiptapMenuBar({ editor }) {
             <IconArrowBackUp color="#444" />
           </button>
           <button
-            className="hover:bg-lime-100 p-1 rounded-sm disabled:bg-gray-50 disabled:cursor-not-allowed"
+            className="hover:bg-indigo-100 p-1 rounded-sm disabled:bg-gray-50 disabled:cursor-not-allowed"
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().chain().focus().redo().run()}
           >
@@ -44,17 +44,15 @@ export default function TiptapMenuBar({ editor }) {
         </div>
         <div className="flex pl-1 gap-x-1 border-r border-gray-300 pr-1">
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive('paragraph') ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive('paragraph') ? 'is-active' : ''
+              }`}
             onClick={() => editor.chain().focus().setParagraph().run()}
           >
             <IconPilcrow color="#444" />
           </button>
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive('heading', { level: 1 }) ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive('heading', { level: 1 }) ? 'is-active' : ''
+              }`}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
             }
@@ -62,9 +60,8 @@ export default function TiptapMenuBar({ editor }) {
             <IconH1 color="#444" />
           </button>
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive('heading', { level: 2 }) ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive('heading', { level: 2 }) ? 'is-active' : ''
+              }`}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
             }
@@ -72,9 +69,8 @@ export default function TiptapMenuBar({ editor }) {
             <IconH2 color="#444" />
           </button>
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive('heading', { level: 3 }) ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive('heading', { level: 3 }) ? 'is-active' : ''
+              }`}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
             }
@@ -82,9 +78,8 @@ export default function TiptapMenuBar({ editor }) {
             <IconH3 color="#444" />
           </button>
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive('heading', { level: 4 }) ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive('heading', { level: 4 }) ? 'is-active' : ''
+              }`}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 4 }).run()
             }
@@ -92,9 +87,8 @@ export default function TiptapMenuBar({ editor }) {
             <IconH4 color="#444" />
           </button>
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive('heading', { level: 5 }) ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive('heading', { level: 5 }) ? 'is-active' : ''
+              }`}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 5 }).run()
             }
@@ -102,9 +96,8 @@ export default function TiptapMenuBar({ editor }) {
             <IconH5 color="#444" />
           </button>
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive('heading', { level: 6 }) ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive('heading', { level: 6 }) ? 'is-active' : ''
+              }`}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 6 }).run()
             }
@@ -114,27 +107,24 @@ export default function TiptapMenuBar({ editor }) {
         </div>
         <div className="flex pl-1 gap-x-1 border-r border-gray-300 pr-1">
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive('bold') ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive('bold') ? 'is-active' : ''
+              }`}
             onClick={() => editor.chain().focus().toggleBold().run()}
             disabled={!editor.can().chain().focus().toggleBold().run()}
           >
             <IconBold color="#444" />
           </button>
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive('italic') ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive('italic') ? 'is-active' : ''
+              }`}
             onClick={() => editor.chain().focus().toggleItalic().run()}
             disabled={!editor.can().chain().focus().toggleItalic().run()}
           >
             <IconItalic color="#444" />
           </button>
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive('strike') ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive('strike') ? 'is-active' : ''
+              }`}
             onClick={() => editor.chain().focus().toggleStrike().run()}
             disabled={!editor.can().chain().focus().toggleStrike().run()}
           >
@@ -143,17 +133,15 @@ export default function TiptapMenuBar({ editor }) {
         </div>
         <div className="flex pl-1 gap-x-1 border-r border-gray-300 pr-1">
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive('bulletList') ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive('bulletList') ? 'is-active' : ''
+              }`}
             onClick={() => editor.chain().focus().toggleBulletList().run()}
           >
             <IconList color="#444" />
           </button>
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive('orderedList') ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive('orderedList') ? 'is-active' : ''
+              }`}
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
           >
             <IconListNumbers color="#444" />
@@ -161,33 +149,29 @@ export default function TiptapMenuBar({ editor }) {
         </div>
         <div className="flex pl-1 gap-x-1 border-r border-gray-300 pr-1">
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive({ textAlign: 'left' }) ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive({ textAlign: 'left' }) ? 'is-active' : ''
+              }`}
             onClick={() => editor.chain().focus().setTextAlign('left').run()}
           >
             <IconAlignLeft color="#444" />
           </button>
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive({ textAlign: 'center' }) ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive({ textAlign: 'center' }) ? 'is-active' : ''
+              }`}
             onClick={() => editor.chain().focus().setTextAlign('center').run()}
           >
             <IconAlignCenter color="#444" />
           </button>
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive({ textAlign: 'right' }) ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive({ textAlign: 'right' }) ? 'is-active' : ''
+              }`}
             onClick={() => editor.chain().focus().setTextAlign('right').run()}
           >
             <IconAlignRight color="#444" />
           </button>
           <button
-            className={`hover:bg-lime-100 p-1 rounded-sm font-bold ${
-              editor.isActive({ textAlign: 'justify' }) ? 'is-active' : ''
-            }`}
+            className={`hover:bg-indigo-100 p-1 rounded-sm font-bold ${editor.isActive({ textAlign: 'justify' }) ? 'is-active' : ''
+              }`}
             onClick={() => editor.chain().focus().setTextAlign('justify').run()}
           >
             <IconAlignJustified color="#444" />
