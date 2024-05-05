@@ -73,8 +73,9 @@ export const createUser = async (credentials) => {
 
     const user = await prisma.user.create({
       data: {
-        email: credentials.email,
+        email: credentials.email.toLowerCase(),
         password: hasedPassword,
+        lastLoggedin: new Date(Date.now()),
         profile: {
           create: {
             name: credentials.username,
@@ -82,9 +83,6 @@ export const createUser = async (credentials) => {
             liveStatus: true,
           },
         },
-      },
-      include: {
-        profile: true,
       },
     });
 
@@ -112,7 +110,7 @@ export const loginUser = async (credentials) => {
 
     if (!exitingUser) {
       const error = new Error("A user with the provided email has not exited.");
-      error.status = 401;
+      error.statusCode = 404;
       throw error;
     }
 

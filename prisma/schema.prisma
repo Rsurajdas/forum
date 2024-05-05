@@ -21,7 +21,7 @@ model User {
   passwordResetToken    String?
   passwordTokenExpireAt DateTime?
   createdAt             DateTime  @default(now())
-  lastLoggedin          DateTime?
+  lastLoggedin          DateTime  @default(now())
   profile               Profile?
   profileId             String?   @db.ObjectId
 }
@@ -32,8 +32,8 @@ model Profile {
   title         String?
   about         String?
   image         String?
-  profileView   Int?
-  likes         Int?
+  profileViews  Int?      @default(0)
+  likes         Int?      @default(0)
   liveStatus    Boolean
   active        Boolean
   followedBy    Profile[] @relation("Profilefollows", fields: [followedByIds], references: [id])

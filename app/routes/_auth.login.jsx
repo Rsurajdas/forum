@@ -14,7 +14,7 @@ export default function LoginPage() {
           <h1 className="text-5xl font-medium">Login</h1>
         </div>
 
-        <TextInput placeholder="Email" name='email' rightSection={<IconAt />} error={data?.credentials} />
+        <TextInput placeholder="Email" name='email' rightSection={<IconAt />} error={data?.email || data?.credentials} />
 
         <PasswordInput placeholder="Password" mt="lg" variant="default" name='password' error={data?.credentials} />
 
@@ -53,6 +53,9 @@ export const action = async ({ request }) => {
   } catch (error) {
     if (error.statusCode === 401) {
       return { credentials: error.message }
+    }
+    if (error.statusCode === 404) {
+      return { email: error.message }
     }
   }
 }
