@@ -1,8 +1,8 @@
 import { PasswordInput, TextInput } from '@mantine/core';
 import { Form, Link, useActionData } from '@remix-run/react';
 import { IconAt } from '@tabler/icons-react';
-import { validateUser } from '../utils/validate.server';
-import { loginUser } from '../utils/auth.server';
+import { validateUser } from '../utils/validate.server.js';
+import { loginUser } from '../utils/auth.server.js';
 
 export default function LoginPage() {
   const data = useActionData()

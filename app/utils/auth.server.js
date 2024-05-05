@@ -26,6 +26,27 @@ const createSession = async (id, redirectPath) => {
   });
 };
 
+export const getUserFromSession = async (request) => {
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+  const userId = session.get("userId");
+
+  if (!userId) {
+    return null;
+  }
+
+  return userId;
+};
+
+export const requireUserSession = async (request) => {
+  const userId = getUserFromSession(request);
+
+  if (!userId) {
+    throw redirect("/login");
+  }
+};
+
 export const createUser = async (credentials) => {
   try {
     const exitingUser = await prisma.user.findFirst({
@@ -57,6 +78,8 @@ export const createUser = async (credentials) => {
         profile: {
           create: {
             name: credentials.username,
+            active: true,
+            liveStatus: true,
           },
         },
       },
@@ -104,6 +127,20 @@ export const loginUser = async (credentials) => {
       throw error;
     }
 
+    await prisma.user.update({
+      where: {
+        email: credentials.email,
+      },
+      data: {
+        lastLoggedin: new Date(Date.now()),
+        profile: {
+          update: {
+            liveStatus: true,
+          },
+        },
+      },
+    });
+
     return createSession(exitingUser.id, "/");
   } catch (error) {
     console.error(`Error occurred: ${error.message}`);
@@ -116,4 +153,29 @@ export const loginUser = async (credentials) => {
   } finally {
     await prisma.$disconnect();
   }
+};
+
+export const logoutUser = async (request, userId) => {
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+
+  await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      profile: {
+        update: {
+          liveStatus: false,
+        },
+      },
+    },
+  });
+
+  return redirect("/", {
+    headers: {
+      "Set-Cookie": await sessionStorage.destroySession(session),
+    },
+  });
 };

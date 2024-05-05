@@ -34,6 +34,8 @@ model Profile {
   image         String?
   profileView   Int?
   likes         Int?
+  liveStatus    Boolean
+  active        Boolean
   followedBy    Profile[] @relation("Profilefollows", fields: [followedByIds], references: [id])
   followedByIds String[]  @db.ObjectId
   following     Profile[] @relation("Profilefollows", fields: [followingIds], references: [id])
