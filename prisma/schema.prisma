@@ -21,14 +21,14 @@ model User {
   passwordResetToken    String?
   passwordTokenExpireAt DateTime?
   createdAt             DateTime  @default(now())
-  lastLoggedin          DateTime
+  lastLoggedin          DateTime?
   profile               Profile?
   profileId             String?   @db.ObjectId
 }
 
 model Profile {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
+  name          String
   title         String?
   about         String?
   image         String?

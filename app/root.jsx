@@ -21,7 +21,7 @@ export function Layout({ children }) {
         <Links />
         <ColorSchemeScript />
       </head>
-      <body className="bg-stone-50">
+      <body className="bg-stone-50 font-mono">
         <Header />
         <MantineProvider>{children}</MantineProvider>
         <ScrollRestoration />

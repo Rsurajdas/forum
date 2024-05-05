@@ -6,7 +6,6 @@ export default function AuthPage() {
       <section className="py-12">
         <div className="xl:container">
           <Outlet />
-
         </div>
       </section>
     </main>
