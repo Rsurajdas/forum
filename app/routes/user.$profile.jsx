@@ -46,12 +46,14 @@ export default function ProfilePage() {
               </div>
               <div className="text-sm mb-5 flex items-center justify-center gap-x-2">
                 <p>
-                  Joined at <span className="font-bold">{Math.round(date.subtract(new Date(Date.now()), new Date(profile?.User.createdAt)).toHours())}hour ago</span>
+                  Joined at <span className="font-bold">{Math.round(date.subtract(new Date(Date.now()), new Date(profile?.user.createdAt)).toHours())}hours ago</span>
                 </p>
-                <span>|</span>
-                <p>
-                  Last Online <span className="font-bold">4mth</span>
-                </p>
+                {!profile?.liveStatus ? <>
+                  <span>|</span>
+                  <p>
+                    Last Online <span className="font-bold">4mth</span>
+                  </p>
+                </> : null}
               </div>
               <div className="flex justify-center">
                 <Button variant="default" size="xs">

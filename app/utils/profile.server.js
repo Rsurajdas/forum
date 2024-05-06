@@ -16,12 +16,12 @@ export const getProfile = async (userId) => {
         },
       },
     });
-    return json({ status: "Success", profile });
+    return json({ profile });
   } catch (error) {
-    console.error(`Error occurred: ${error.message}`);
+    console.log(`Error occurred: ${error.message}`);
 
     if (error.statusCode) {
-      console.error(`Status Code: ${error.statusCode}`);
+      console.log(`Status Code: ${error.statusCode}`);
     }
 
     throw error;

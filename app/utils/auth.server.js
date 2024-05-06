@@ -88,10 +88,10 @@ export const createUser = async (credentials) => {
 
     return createSession(user.id, "/");
   } catch (error) {
-    console.error(`Error occurred: ${error.message}`);
+    console.log(`Error occurred: ${error.message}`);
 
     if (error.statusCode) {
-      console.error(`Status Code: ${error.statusCode}`);
+      console.log(`Status Code: ${error.statusCode}`);
     }
 
     throw error;
@@ -141,10 +141,10 @@ export const loginUser = async (credentials) => {
 
     return createSession(exitingUser.id, "/");
   } catch (error) {
-    console.error(`Error occurred: ${error.message}`);
+    console.log(`Error occurred: ${error.message}`);
 
     if (error.statusCode) {
-      console.error(`Status Code: ${error.statusCode}`);
+      console.log(`Status Code: ${error.statusCode}`);
     }
 
     throw error;
