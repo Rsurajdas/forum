@@ -52,6 +52,7 @@ model Profile {
 model Role {
   id              String       @id @default(auto()) @map("_id") @db.ObjectId
   title           String
+  description     String
   Profile         Profile[]
   rolePermissions Permission[] @relation(fields: [permissonIds], references: [id])
   permissonIds    String[]     @db.ObjectId
@@ -110,7 +111,7 @@ model Permission {
   name    PermissionName @unique
   forum   Forum?         @relation(fields: [forumId], references: [id])
   forumId String?        @db.ObjectId
-  Role    Role[]         @relation(fields: [roleId], references: [id])
+  role    Role[]         @relation(fields: [roleId], references: [id])
   roleId  String[]       @db.ObjectId
 }
 

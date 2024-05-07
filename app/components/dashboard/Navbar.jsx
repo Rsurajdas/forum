@@ -6,6 +6,7 @@ import {
   IconMessageDots,
   IconSettings,
   IconUsers,
+  IconCircles
 } from "@tabler/icons-react";
 import classes from "../../styles/Navbar.module.css";
 import NavbarLink from "./NavbarLink";
@@ -19,6 +20,7 @@ const navLists = [
   { icon: IconMessageDots, label: "Posts", path: "/admin/posts" },
   { icon: IconUsers, label: "Users", path: "/admin/users" },
   { icon: IconSettings, label: "Settings", path: "/admin/settings" },
+  { icon: IconCircles, label: "Roles", path: "/admin/roles" },
 ];
 
 export default function Navbar() {
