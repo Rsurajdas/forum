@@ -4,7 +4,7 @@ import { Outlet } from '@remix-run/react';
 export default function ForumLayout() {
   return (
     <>
-      <main>
+      <main className='ml-20 mt-14'>
         <section className="py-12">
           <div className="xl:container">
             <div className="flex gap-6">
