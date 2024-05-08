@@ -17,7 +17,8 @@ function isValidPassword(value) {
     .match(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/);
 }
 
-function validateUser(credentials) {
+// Validate User
+export function validateUser(credentials) {
   const validationErrors = {};
 
   if (!isValidEmail(credentials.email)) {
@@ -38,5 +39,3 @@ function validateUser(credentials) {
     throw validationErrors;
   }
 }
-
-export { validateUser };

@@ -4,7 +4,7 @@ import Navbar from "../components/dashboard/Navbar";
 export default function DashboardPage() {
   return (
     <>
-      <main className="flex ml-20 mt-14">
+      <main className="flex ml-20 mt-8">
         <Navbar />
         <div className="content w-full">
           <div className="container p-12">

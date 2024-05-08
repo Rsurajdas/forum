@@ -8,6 +8,7 @@
   position: fixed;
   left: 0;
   top: rem(56px);
+  z-index: 10;
 }
 
 .navbarMain {

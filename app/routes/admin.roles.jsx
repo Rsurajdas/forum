@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Table, Checkbox, Title, TextInput, Textarea, Tooltip } from '@mantine/core';
-import { Form, json, useFetcher, useLoaderData, useMatches, useSubmit } from '@remix-run/react';
+import { Form, json, useActionData, useFetcher, useLoaderData, useMatches, useSubmit } from '@remix-run/react';
 import { createUpdateRole, getAllRoles } from '../utils/roles.server';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 
@@ -14,6 +14,7 @@ export default function RolesPage() {
   const submit = useSubmit()
   const fetcher = useFetcher()
   const matches = useMatches()
+  const data = useActionData()
   const [role] = matches.filter(item => item.id === "routes/admin.roles.$id")
   const [formData, setFormData] = useState({
     title: "",
@@ -47,22 +48,24 @@ export default function RolesPage() {
   }
   useEffect(
     () => {
-      setFormData({
-        title: role?.data?.title,
-        description: role?.data?.description
-      })
+      if (role) {
+        setFormData({
+          title: role?.data?.title,
+          description: role?.data?.description
+        })
+      }
     }, [role]
   )
 
   return (
     <>
-      <div className="mb-8 font-normal">
+      <div className="mb-8">
         <Title order={1} style={{ fontFamily: `ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace` }}>Roles</Title>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className='mb-12 w-1/3'>
           <Form className='flex gap-4 flex-col w-full' method='post' onSubmit={handleFormSubmit}>
-            <TextInput label="Title" name='title' value={formData.title} onChange={(e) => handleFormData(e)} />
+            <TextInput label="Title" name='title' value={formData.title} onChange={(e) => handleFormData(e)} withAsterisk error={data?.input} />
             <Textarea
               label="Desctiption"
               name='description'
@@ -132,5 +135,10 @@ export default function RolesPage() {
 export const action = async ({ request }) => {
   const formData = await request.formData()
   const data = Object.fromEntries(formData)
-  return await createUpdateRole(data)
+
+  try {
+    return await createUpdateRole(data)
+  } catch (error) {
+    return { input: error.message }
+  }
 }

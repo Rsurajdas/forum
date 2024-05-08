@@ -96,7 +96,7 @@ const folders = [
 ];
 
 export default function ForumPage() {
-  const [folder, setFolder] = useState(['Community']);
+  const [folder, setFolder] = useState(['Purchase Support']);
   return (
     <Accordion
       variant="separated"
@@ -117,7 +117,6 @@ export default function ForumPage() {
                 <ForumList
                   key={forum.id}
                   {...forum}
-                  folderName={slugify(item.folder, { lower: true })}
                 />
               ))}
             </div>
