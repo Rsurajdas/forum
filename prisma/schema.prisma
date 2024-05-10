@@ -44,7 +44,7 @@ model Profile {
   moderatorOf   Forum[]   @relation("ForumModerator")
   adminOf       Forum[]   @relation("ForumAdmin")
   topics        Topic[]
-  role          Role[]    @relation(fields: [roleId], references: [id])
+  roles         Role[]    @relation(fields: [roleId], references: [id])
   roleId        String[]  @db.ObjectId
 }
 
@@ -52,7 +52,7 @@ model Role {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String    @unique
   description String
-  profile     Profile[] @relation(fields: [profileId], references: [id])
+  profiles    Profile[] @relation(fields: [profileId], references: [id])
   profileId   String[]  @db.ObjectId
 }
 
@@ -66,19 +66,22 @@ model Folder {
 }
 
 model Forum {
-  id          String             @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
-  status      Boolean
-  position    Int
-  moderator   Profile?           @relation("ForumModerator", fields: [moderatorId], references: [id])
-  moderatorId String?            @db.ObjectId
-  createdBy   Profile?           @relation("ForumAdmin", fields: [createdById], references: [id])
-  createdById String?            @db.ObjectId
-  parent      Folder             @relation(fields: [folderId], references: [id])
-  folderId    String             @db.ObjectId
-  permissions ForumPermissions[] @default([VIEW_PUBLIC_CONTENTS])
-  topics      Topic[]
+  id                String          @id @default(auto()) @map("_id") @db.ObjectId
+  title             String
+  description       String
+  status            Boolean
+  position          Int
+  moderator         Profile?        @relation("ForumModerator", fields: [moderatorId], references: [id])
+  moderatorId       String?         @db.ObjectId
+  createdBy         Profile?        @relation("ForumAdmin", fields: [createdById], references: [id])
+  createdById       String?         @db.ObjectId
+  parent            Folder          @relation(fields: [folderId], references: [id])
+  folderId          String          @db.ObjectId
+  userPermissions   ForumPermission @relation("User", fields: [userPermissionId], references: [id])
+  userPermissionId  String          @db.ObjectId
+  guestPermissions  ForumPermission @relation("Guest", fields: [guestPermissionId], references: [id])
+  guestPermissionId String          @db.ObjectId
+  topics            Topic[]
 }
 
 model Topic {
@@ -104,21 +107,18 @@ model Tag {
   topicIds String[] @db.ObjectId
 }
 
-enum ForumPermissions {
-  VIEW_PUBLIC_CONTENTS
-  VIEW_HIDDEN_TOPICS
-  CREATE_NEW_TOPICS
-  UPLOAD_FILES
-  APPROVE_NEW_TOPICS
-  EDIT_OWN_TOPICS
-  EDIT_ANY_TOPICS
-  DELETE_OWN_TOPICS
-  DELETE_ANY_TOPICS
-  COMMENT_ON_OPEN_TOPICS
-  COMMENT_ON_LOCKED_TOPICS
-  APPROVE_NEW_COMMENTS
-  EDIT_OWN_COMMENTS
-  EDIT_ANY_COMMENTS
-  DELETE_OWN_COMMENTS
-  DELETE_ANY_COMMENTS
+model ForumPermission {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  viewContent        Boolean?
+  createTopic        Boolean?
+  uploadFiles        Boolean?
+  autoApproveTopic   Boolean?
+  editTopic          Boolean?
+  deleteTopic        Boolean?
+  commentOnOpenTopic Boolean?
+  autoApproveComment Boolean?
+  editComment        Boolean?
+  deleteComment      Boolean?
+  userForum          Forum[]  @relation("User")
+  guestForum         Forum[]  @relation("Guest")
 }

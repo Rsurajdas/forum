@@ -1,12 +1,18 @@
 import { Button, Checkbox, Select, Switch, Table, TextInput, Textarea, Title, Tooltip } from "@mantine/core";
-import { Form, useNavigate } from "@remix-run/react";
+import { Form, json, useLoaderData, useNavigate } from "@remix-run/react";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useState } from "react";
+import { getAllRegistedUser } from "../utils/user.server";
+import { getAllFolders } from "../utils/folder.server";
+
+export const loader = async () => {
+  return json({ users: await getAllRegistedUser(), folders: await getAllFolders() })
+}
 
 export default function ForumCreatePage() {
   const navigate = useNavigate()
-  const [value, setValue] = useState(null);
   const [checked, setChecked] = useState(false);
+  const { users, folders } = useLoaderData()
 
   return (
     <>
@@ -26,13 +32,7 @@ export default function ForumCreatePage() {
             <Select
               label="Parent"
               placeholder="Choose forum"
-              data={[
-                { value: 'react', label: 'React library' },
-                { value: 'remix', label: 'Remix framework' },
-                { value: 'Next', label: 'Next framework' }
-              ]}
-              value={value ? value.value : null}
-              onChange={(_value, option) => setValue(option)}
+              data={folders.map(folder => ({ value: folder.id, label: folder.title }))}
               clearable
               name="parent"
             />
@@ -73,37 +73,157 @@ export default function ForumCreatePage() {
                 <Table.Tr>
                   <Table.Td>View public contents</Table.Td>
                   <Table.Td>
-                    <Checkbox name="permissionGuest1" />
+                    <Checkbox defaultChecked name="viewContent_guest" size="xs" />
                   </Table.Td>
                   <Table.Td>
-                    <Checkbox name="permissionUser1" />
+                    <Checkbox defaultChecked name="viewContent_user" size="xs" />
                   </Table.Td>
                   <Table.Td>
-                    <Checkbox name="permissionModerator1" />
-                  </Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                  <Table.Td>View public contents</Table.Td>
-                  <Table.Td>
-                    <Checkbox name="permissionGuest2" />
-                  </Table.Td>
-                  <Table.Td>
-                    <Checkbox name="permissionUser2" />
-                  </Table.Td>
-                  <Table.Td>
-                    <Checkbox name="permissionModerator2" />
+                    <Checkbox defaultChecked disabled size="xs" />
                   </Table.Td>
                 </Table.Tr>
                 <Table.Tr>
-                  <Table.Td>View public contents</Table.Td>
+                  <Table.Td>View hidden topics</Table.Td>
+                  <Table.Td colSpan={3} style={{ textAlign: "center" }} className="bg-stone-100 text-stone-400">
+                    Only Moderator
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Create new topics</Table.Td>
                   <Table.Td>
-                    <Checkbox name="permissionGuest3" />
+                    <Checkbox disabled size="xs" />
                   </Table.Td>
                   <Table.Td>
-                    <Checkbox name="permissionUser3" />
+                    <Checkbox name="createTopic" size="xs" />
                   </Table.Td>
                   <Table.Td>
-                    <Checkbox name="permissionModerator3" />
+                    <Checkbox defaultChecked disabled size="xs" />
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Upload files</Table.Td>
+                  <Table.Td>
+                    <Checkbox disabled size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox name="uploadFiles" size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox defaultChecked disabled size="xs" />
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>New topics will be approved automatically</Table.Td>
+                  <Table.Td>
+                    <Checkbox disabled size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox name="autoApproveTopic" size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox defaultChecked disabled size="xs" />
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Edit my own topics</Table.Td>
+                  <Table.Td>
+                    <Checkbox disabled size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox name="editTopic" size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox defaultChecked disabled size="xs" />
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Edit any topics</Table.Td>
+                  <Table.Td colSpan={3} style={{ textAlign: "center" }} className="bg-stone-100 text-stone-400">
+                    Only Moderator
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Delete my own topics</Table.Td>
+                  <Table.Td>
+                    <Checkbox disabled size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox name="deleteTopic" size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox defaultChecked disabled size="xs" />
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Delete any topics</Table.Td>
+                  <Table.Td colSpan={3} style={{ textAlign: "center" }} className="bg-stone-100 text-stone-400">
+                    Only Moderator
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Comment on open topics</Table.Td>
+                  <Table.Td>
+                    <Checkbox disabled size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox name="commentOnOpenTopic" size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox defaultChecked disabled size="xs" />
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Comment on locked topics</Table.Td>
+                  <Table.Td colSpan={3} style={{ textAlign: "center" }} className="bg-stone-100 text-stone-400">
+                    Only Moderator
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>New comments will be approved automatically</Table.Td>
+                  <Table.Td>
+                    <Checkbox disabled size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox name="autoApproveComment" size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox defaultChecked disabled size="xs" />
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Edit my own comments</Table.Td>
+                  <Table.Td>
+                    <Checkbox disabled size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox name="editComment" size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox defaultChecked disabled size="xs" />
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Edit any comments</Table.Td>
+                  <Table.Td colSpan={3} style={{ textAlign: "center" }} className="bg-stone-100 text-stone-400">
+                    Only Moderator
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Delete my own comments</Table.Td>
+                  <Table.Td>
+                    <Checkbox disabled size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox name="deleteComment" size="xs" />
+                  </Table.Td>
+                  <Table.Td>
+                    <Checkbox defaultChecked disabled size="xs" />
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Delete any comments</Table.Td>
+                  <Table.Td colSpan={3} style={{ textAlign: "center" }} className="bg-stone-100 text-stone-400">
+                    Only Moderator
                   </Table.Td>
                 </Table.Tr>
               </Table.Tbody>
@@ -114,14 +234,8 @@ export default function ForumCreatePage() {
           <div className="w-2/3 bg-white border border-gray-200 shadow-sm rounded-sm p-6 flex flex-col gap-4">
             <Select
               label="Moderator"
-              placeholder="Choose forum"
-              data={[
-                { value: 'react', label: 'React library' },
-                { value: 'remix', label: 'Remix framework' },
-                { value: 'Next', label: 'Next framework' }
-              ]}
-              value={value ? value.value : null}
-              onChange={(_value, option) => setValue(option)}
+              placeholder="Choose moderator"
+              data={users?.profiles.map(profile => ({ value: profile.id, label: profile.name }))}
               clearable
               name="moderator"
             />

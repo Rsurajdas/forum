@@ -4,9 +4,10 @@ import {
   IconLogout,
   IconMessage,
   IconMessageDots,
-  IconSettings,
+  // IconSettings,
   IconUsers,
-  IconCircles
+  IconCircles,
+  IconTag
 } from "@tabler/icons-react";
 import classes from "../../styles/Navbar.module.css";
 import NavbarLink from "./NavbarLink";
@@ -19,8 +20,9 @@ const navLists = [
   { icon: IconMessage, label: "Topics", path: "/admin/topics" },
   { icon: IconMessageDots, label: "Posts", path: "/admin/posts" },
   { icon: IconUsers, label: "Users", path: "/admin/users" },
-  { icon: IconSettings, label: "Settings", path: "/admin/settings" },
+  // { icon: IconSettings, label: "Settings", path: "/admin/settings" },
   { icon: IconCircles, label: "Roles", path: "/admin/roles" },
+  { icon: IconTag, label: "Tags", path: "/admin/tags" },
 ];
 
 export default function Navbar() {
