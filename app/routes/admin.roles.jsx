@@ -81,6 +81,7 @@ export default function RolesPage() {
               <Table.Th />
               <Table.Th>Title</Table.Th>
               <Table.Th>Description</Table.Th>
+              <Table.Th>Users</Table.Th>
               <Table.Th>Action</Table.Th>
             </Table.Tr>
           </Table.Thead>
@@ -109,6 +110,7 @@ export default function RolesPage() {
                 </Table.Td>
                 <Table.Td>{element.title}</Table.Td>
                 <Table.Td>{element.description}</Table.Td>
+                <Table.Td>{element.profileId.length}</Table.Td>
                 <Table.Td>
                   <div className="flex gap-3">
                     <Tooltip label="Edit" position='bottom' color='indigo'>

@@ -2,7 +2,7 @@
 .mantine-Accordion-content {
   background-color: #fff;
 }
-.mantine-Accordion-control[data-active="true"] {
+.mantine-Accordion-control[data-active='true'] {
   background-color: var(--mantine-color-indigo-1);
 }
 .mantine-Accordion-item {

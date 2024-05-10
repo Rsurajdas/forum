@@ -22,20 +22,18 @@ export function validateUser(credentials) {
   const validationErrors = {};
 
   if (!isValidEmail(credentials.email)) {
-    validationErrors.email = "Invalid email address";
+    validationErrors.email = 'Invalid email address';
   }
 
   if (credentials.username && !isValidUsername(credentials.username)) {
     validationErrors.username =
-      "Invalid username, it should contain 5 to 12 characters.";
+      'Invalid username, it should contain 5 to 12 characters.';
   }
 
   if (!isValidPassword(credentials.password)) {
     validationErrors.password =
-      "Password should contain at least one number and at least one special character";
+      'Password should contain at least one number and at least one special character';
   }
 
-  if (Object.keys(validationErrors).length) {
-    throw validationErrors;
-  }
+  return validationErrors;
 }

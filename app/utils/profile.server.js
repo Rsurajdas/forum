@@ -1,5 +1,5 @@
-import { json } from "@remix-run/node";
-import { prisma } from "./database.server";
+import { json } from '@remix-run/node';
+import { prisma } from './database.server';
 
 export const getProfile = async (userId) => {
   try {
@@ -8,12 +8,13 @@ export const getProfile = async (userId) => {
         userId: userId,
       },
       include: {
-        User: {
+        user: {
           select: {
             createdAt: true,
             lastLoggedin: true,
           },
         },
+        role: true,
       },
     });
     return json({ profile });
@@ -28,4 +29,17 @@ export const getProfile = async (userId) => {
   } finally {
     await prisma.$disconnect();
   }
+};
+
+export const getProfileByRole = async (roleName) => {
+  return await prisma.profile.findMany({
+    where: {
+      role: {
+        title: roleName,
+      },
+    },
+    include: {
+      role: true,
+    },
+  });
 };

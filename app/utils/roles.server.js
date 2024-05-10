@@ -1,11 +1,11 @@
-import { prisma } from "./database.server";
+import { prisma } from './database.server';
 
 export const createUpdateRole = async (data) => {
   try {
     const { title, description } = data;
 
     if (!title) {
-      const error = new Error("Invalid title, title must not be empty.");
+      const error = new Error('Invalid title, title must not be empty.');
       error.statusCode = 404;
       throw error;
     }

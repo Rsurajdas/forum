@@ -23,7 +23,6 @@ model User {
   createdAt             DateTime  @default(now())
   lastLoggedin          DateTime  @default(now())
   profile               Profile?
-  profileId             String?   @db.ObjectId
 }
 
 model Profile {
@@ -45,17 +44,16 @@ model Profile {
   moderatorOf   Forum[]   @relation("ForumModerator")
   adminOf       Forum[]   @relation("ForumAdmin")
   topics        Topic[]
-  role          Role      @relation(fields: [roleId], references: [id])
-  roleId        String    @db.ObjectId
+  role          Role[]    @relation(fields: [roleId], references: [id])
+  roleId        String[]  @db.ObjectId
 }
 
 model Role {
-  id              String       @id @default(auto()) @map("_id") @db.ObjectId
-  title           String       @unique
-  description     String
-  Profile         Profile[]
-  rolePermissions Permission[] @relation(fields: [permissonIds], references: [id])
-  permissonIds    String[]     @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String    @unique
+  description String
+  profile     Profile[] @relation(fields: [profileId], references: [id])
+  profileId   String[]  @db.ObjectId
 }
 
 model Folder {
@@ -64,22 +62,22 @@ model Folder {
   description String
   status      Boolean
   position    Int
-  forum       Forum[]
+  forums      Forum[]
 }
 
 model Forum {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  id          String             @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
   status      Boolean
   position    Int
-  moderator   Profile      @relation("ForumModerator", fields: [moderatorId], references: [id])
-  moderatorId String       @db.ObjectId
-  createdBy   Profile      @relation("ForumAdmin", fields: [createdById], references: [id])
-  createdById String       @db.ObjectId
-  parent      Folder       @relation(fields: [folderId], references: [id])
-  folderId    String       @db.ObjectId
-  permissions Permission[]
+  moderator   Profile?           @relation("ForumModerator", fields: [moderatorId], references: [id])
+  moderatorId String?            @db.ObjectId
+  createdBy   Profile?           @relation("ForumAdmin", fields: [createdById], references: [id])
+  createdById String?            @db.ObjectId
+  parent      Folder             @relation(fields: [folderId], references: [id])
+  folderId    String             @db.ObjectId
+  permissions ForumPermissions[] @default([VIEW_PUBLIC_CONTENTS])
   topics      Topic[]
 }
 
@@ -87,8 +85,8 @@ model Topic {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
-  forum       Forum    @relation(fields: [forumId], references: [id])
-  forumId     String   @db.ObjectId
+  forum       Forum?   @relation(fields: [forumId], references: [id])
+  forumId     String?  @db.ObjectId
   slug        String
   status      String
   islock      Boolean
@@ -106,16 +104,7 @@ model Tag {
   topicIds String[] @db.ObjectId
 }
 
-model Permission {
-  id      String         @id @default(auto()) @map("_id") @db.ObjectId
-  name    PermissionName @unique
-  forum   Forum?         @relation(fields: [forumId], references: [id])
-  forumId String?        @db.ObjectId
-  role    Role[]         @relation(fields: [roleId], references: [id])
-  roleId  String[]       @db.ObjectId
-}
-
-enum PermissionName {
+enum ForumPermissions {
   VIEW_PUBLIC_CONTENTS
   VIEW_HIDDEN_TOPICS
   CREATE_NEW_TOPICS

@@ -1,6 +1,7 @@
-import { prisma } from "./database.server";
-import { createCookieSessionStorage, redirect } from "@remix-run/node";
-import bcrypt from "bcrypt";
+import { prisma } from './database.server';
+import { createCookieSessionStorage, redirect } from '@remix-run/node';
+import bcrypt from 'bcrypt';
+import { validateUser } from './validate.server';
 
 // eslint-disable-next-line no-undef
 const SESSION_SECRET = process.env.SESSION_SECRET;
@@ -8,29 +9,29 @@ const SESSION_SECRET = process.env.SESSION_SECRET;
 const sessionStorage = createCookieSessionStorage({
   cookie: {
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: 'lax',
     maxAge: 7 * 24 * 60 * 60,
     // eslint-disable-next-line no-undef
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === 'production',
     secrets: [SESSION_SECRET],
   },
 });
 
 const createSession = async (id, redirectPath) => {
   const session = await sessionStorage.getSession();
-  session.set("userId", id);
+  session.set('userId', id);
   return redirect(redirectPath, {
     headers: {
-      "Set-Cookie": await sessionStorage.commitSession(session),
+      'Set-Cookie': await sessionStorage.commitSession(session),
     },
   });
 };
 
 export const getUserFromSession = async (request) => {
   const session = await sessionStorage.getSession(
-    request.headers.get("Cookie")
+    request.headers.get('Cookie')
   );
-  const userId = session.get("userId");
+  const userId = session.get('userId');
 
   if (!userId) {
     return null;
@@ -43,7 +44,7 @@ export const requireUserSession = async (request) => {
   const userId = getUserFromSession(request);
 
   if (!userId) {
-    throw redirect("/login");
+    throw redirect('/login');
   }
 };
 
@@ -55,18 +56,36 @@ export const createUser = async (credentials) => {
       },
     });
 
+    const role = await prisma.role.findUnique({
+      where: {
+        title: credentials.role,
+      },
+    });
+
+    const validationErrors = validateUser(credentials);
+
+    if (!role) {
+      const error = new Error('Role not found!');
+      error.statusCode = 404;
+      validationErrors.role = error.message;
+    }
+
     if (exitingUser) {
       const error = new Error(
-        "A user with the provided email has already exited."
+        'A user with the provided email has already exited.'
       );
-      error.statusCode = 422;
-      throw error;
+      error.statusCode = 402;
+      validationErrors.credential = error.message;
     }
 
     if (credentials.password !== credentials.confirmpassword) {
-      const error = new Error("Passwords do not match.");
-      error.statusCode = 401;
-      throw error;
+      const error = new Error('Passwords do not match.');
+      error.statusCode = 404;
+      validationErrors.confirmpassword = error.message;
+    }
+
+    if (Object.keys(validationErrors).length) {
+      throw validationErrors;
     }
 
     const hasedPassword = await bcrypt.hash(credentials.password, 12);
@@ -79,20 +98,20 @@ export const createUser = async (credentials) => {
         profile: {
           create: {
             name: credentials.username,
-            active: true,
-            liveStatus: true,
+            status: true,
+            isUserLive: true,
+            role: { connect: { id: role.id } },
           },
         },
       },
+      include: {
+        profile: true,
+      },
     });
 
-    return createSession(user.id, "/");
+    return createSession(user.id, '/');
   } catch (error) {
     console.log(`Error occurred: ${error.message}`);
-
-    if (error.statusCode) {
-      console.log(`Status Code: ${error.statusCode}`);
-    }
 
     throw error;
   } finally {
@@ -109,7 +128,7 @@ export const loginUser = async (credentials) => {
     });
 
     if (!exitingUser) {
-      const error = new Error("A user with the provided email has not exited.");
+      const error = new Error('A user with the provided email has not exited.');
       error.statusCode = 404;
       throw error;
     }
@@ -120,7 +139,7 @@ export const loginUser = async (credentials) => {
     );
 
     if (!passwordCheck) {
-      const error = new Error("Invalid email or password");
+      const error = new Error('Invalid email or password');
       error.statusCode = 401;
       throw error;
     }
@@ -139,7 +158,7 @@ export const loginUser = async (credentials) => {
       },
     });
 
-    return createSession(exitingUser.id, "/");
+    return createSession(exitingUser.id, '/');
   } catch (error) {
     console.log(`Error occurred: ${error.message}`);
 
@@ -155,7 +174,7 @@ export const loginUser = async (credentials) => {
 
 export const logoutUser = async (request, userId) => {
   const session = await sessionStorage.getSession(
-    request.headers.get("Cookie")
+    request.headers.get('Cookie')
   );
 
   await prisma.user.update({
@@ -165,15 +184,15 @@ export const logoutUser = async (request, userId) => {
     data: {
       profile: {
         update: {
-          liveStatus: false,
+          isUserLive: false,
         },
       },
     },
   });
 
-  return redirect("/", {
+  return redirect('/', {
     headers: {
-      "Set-Cookie": await sessionStorage.destroySession(session),
+      'Set-Cookie': await sessionStorage.destroySession(session),
     },
   });
 };

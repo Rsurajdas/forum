@@ -4,6 +4,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRouteError,
 } from '@remix-run/react';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
@@ -25,6 +26,25 @@ export function Layout({ children }) {
         <Header />
         <MantineProvider>{children}</MantineProvider>
         <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  console.error(error);
+  return (
+    <html lang="en">
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <h1>error.message</h1>
+        {/* add the UI you want your users to see */}
         <Scripts />
       </body>
     </html>

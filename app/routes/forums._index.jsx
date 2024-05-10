@@ -97,32 +97,35 @@ const folders = [
 
 export default function ForumPage() {
   const [folder, setFolder] = useState(['Purchase Support']);
+
   return (
-    <Accordion
-      variant="separated"
-      disableChevronRotation
-      value={folder}
-      onChange={setFolder}
-    >
-      {folders.map((item) => (
-        <Accordion.Item key={item.folder} value={item.folder}>
-          <Accordion.Control icon={<IconFolder />}>
-            <Link to={`${slugify(item.folder, { lower: true })}`}>
-              {item.folder}
-            </Link>
-          </Accordion.Control>
-          <Accordion.Panel>
-            <div className="flex flex-col gap-4">
-              {item.forums.map((forum) => (
-                <ForumList
-                  key={forum.id}
-                  {...forum}
-                />
-              ))}
-            </div>
-          </Accordion.Panel>
-        </Accordion.Item>
-      ))}
-    </Accordion>
+    <>
+      <Accordion
+        variant="separated"
+        disableChevronRotation
+        value={folder}
+        onChange={setFolder}
+      >
+        {folders.map((item) => (
+          <Accordion.Item key={item.folder} value={item.folder}>
+            <Accordion.Control icon={<IconFolder />}>
+              <Link to={`${slugify(item.folder, { lower: true })}`}>
+                {item.folder}
+              </Link>
+            </Accordion.Control>
+            <Accordion.Panel>
+              <div className="flex flex-col gap-4">
+                {item.forums.map((forum) => (
+                  <ForumList
+                    key={forum.id}
+                    {...forum}
+                  />
+                ))}
+              </div>
+            </Accordion.Panel>
+          </Accordion.Item>
+        ))}
+      </Accordion>
+    </>
   );
 }
