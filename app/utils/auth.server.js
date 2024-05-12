@@ -100,7 +100,7 @@ export const createUser = async (credentials) => {
             name: credentials.username,
             status: true,
             isUserLive: true,
-            role: { connect: { id: role.id } },
+            roles: { connect: { id: role.id } },
           },
         },
       },
@@ -152,7 +152,7 @@ export const loginUser = async (credentials) => {
         lastLoggedin: new Date(Date.now()),
         profile: {
           update: {
-            liveStatus: true,
+            isUserLive: true,
           },
         },
       },

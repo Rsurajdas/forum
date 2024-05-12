@@ -34,7 +34,6 @@ export function Layout({ children }) {
 
 export function ErrorBoundary() {
   const error = useRouteError();
-  console.error(error);
   return (
     <html lang="en">
       <head>
@@ -43,7 +42,9 @@ export function ErrorBoundary() {
         <Links />
       </head>
       <body>
-        <h1>error.message</h1>
+        <main className="ml-20 mt-14">
+          <h1>{error.message}</h1>
+        </main>
         {/* add the UI you want your users to see */}
         <Scripts />
       </body>

@@ -4,6 +4,8 @@ import { IconArrowLeft } from "@tabler/icons-react";
 import { useState } from "react";
 import { getAllRegistedUser } from "../utils/user.server";
 import { getAllFolders } from "../utils/folder.server";
+import { getUserFromSession } from "../utils/auth.server";
+import { createForum } from "../utils/forum.server";
 
 export const loader = async () => {
   return json({ users: await getAllRegistedUser(), folders: await getAllFolders() })
@@ -11,14 +13,14 @@ export const loader = async () => {
 
 export default function ForumCreatePage() {
   const navigate = useNavigate()
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const { users, folders } = useLoaderData()
 
   return (
     <>
       <div className="mb-8">
         <Tooltip label="back" position="top">
-          <Button variant="light" size="compact-md" color="indigo" onClick={() => navigate(-1)}>
+          <Button variant="light" size="compact-md" color="indigo" onClick={() => navigate('..')}>
             <IconArrowLeft />
           </Button>
         </Tooltip>
@@ -252,6 +254,6 @@ export default function ForumCreatePage() {
 export const action = async ({ request }) => {
   const formData = await request.formData()
   const data = Object.fromEntries(formData)
-  console.log(data)
-  return data
+  const userId = await getUserFromSession(request)
+  return await createForum(data, userId)
 }
