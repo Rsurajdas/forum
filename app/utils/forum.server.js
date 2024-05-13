@@ -91,3 +91,24 @@ export const createForum = async (data, profileId) => {
     await prisma.$disconnect();
   }
 };
+
+export const getForumBySlug = async (slug) => {
+  try {
+    return await prisma.forum.findUnique({
+      where: {
+        slug: slug,
+      },
+      include: {
+        permissions: true,
+        topics: true,
+        followers: true,
+      },
+    });
+  } catch (error) {
+    console.log(`Error occurred: ${error.message}`);
+
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+};
