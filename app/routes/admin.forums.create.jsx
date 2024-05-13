@@ -1,5 +1,5 @@
 import { Button, Checkbox, Select, Switch, Table, TextInput, Textarea, Title, Tooltip } from "@mantine/core";
-import { Form, json, useLoaderData, useNavigate } from "@remix-run/react";
+import { Form, json, useLoaderData, useNavigate, useNavigation } from "@remix-run/react";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useState } from "react";
 import { getAllRegistedUser } from "../utils/user.server";
@@ -15,9 +15,11 @@ export default function ForumCreatePage() {
   const navigate = useNavigate()
   const [checked, setChecked] = useState(true);
   const { users, folders } = useLoaderData()
+  const navigation = useNavigation()
 
   return (
     <>
+      {console.log(navigation)}
       <div className="mb-8">
         <Tooltip label="back" position="top">
           <Button variant="light" size="compact-md" color="indigo" onClick={() => navigate('..')}>
@@ -244,7 +246,7 @@ export default function ForumCreatePage() {
           </div>
         </div>
         <div className="flex mt-6 border-t border-gray-200 pt-4 justify-end">
-          <button className="bg-indigo-700 text-white py-3 px-8 rounded-sm">Submit</button>
+          <button className="bg-indigo-700 text-white py-3 px-8 rounded-sm">{navigation.state === "loading" ? "Submitting..." : 'Submit'}</button>
         </div>
       </Form>
     </>

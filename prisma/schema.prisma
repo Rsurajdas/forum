@@ -90,8 +90,8 @@ model Forum {
   createdById  String?         @db.ObjectId
   parent       Folder          @relation(fields: [folderId], references: [id])
   folderId     String          @db.ObjectId
-  permissions  ForumPermission @relation("User", fields: [permissionId], references: [id])
-  permissionId String          @db.ObjectId
+  permissions  ForumPermission @relation(fields: [permissionId], references: [id])
+  permissionId String          @unique @db.ObjectId
   topics       Topic[]
   followers    Profile[]       @relation("ForumFollower", fields: [followerIds], references: [id])
   followerIds  String[]        @db.ObjectId
@@ -142,5 +142,5 @@ model ForumPermission {
   autoApproveComment Boolean?
   editComment        Boolean?
   deleteComment      Boolean?
-  userForum          Forum[]  @relation("User")
+  forum              Forum?
 }

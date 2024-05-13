@@ -1,22 +1,38 @@
 import { redirect } from '@remix-run/react';
 import { prisma } from './database.server';
 
-export const createForum = async (data, userId) => {
+export const createForum = async (data, profileId) => {
   try {
-    const adminProfile = await prisma.user.findFirst({
+    const admin = await prisma.profile.findFirst({
       where: {
-        id: userId,
-      },
-      include: {
-        profile: {
-          select: {
-            id: true,
-          },
-        },
+        id: profileId,
       },
     });
 
-    await prisma.forum.create({
+    const moderatorProfile = await prisma.profile.findFirst({
+      where: {
+        id: data.moderator,
+      },
+    });
+
+    const moderatorRole = await prisma.role.findUnique({
+      where: {
+        title: 'Moderator',
+      },
+    });
+
+    if (!moderatorProfile.roleId.includes(moderatorRole.id)) {
+      await prisma.profile.update({
+        where: {
+          id: data.moderator,
+        },
+        data: {
+          roles: { connect: { id: moderatorRole.id } },
+        },
+      });
+    }
+
+    const forum = await prisma.forum.create({
       data: {
         title: data.title,
         description: data.description,
@@ -29,7 +45,7 @@ export const createForum = async (data, userId) => {
         },
         createdBy: {
           connect: {
-            id: adminProfile.profile.id,
+            id: admin.id,
           },
         },
         parent: {
@@ -37,7 +53,7 @@ export const createForum = async (data, userId) => {
             id: data.parent,
           },
         },
-        userPermissions: {
+        permissions: {
           create: {
             viewContentGuest: !!data.viewContent_guest,
             viewContentUser: !!data.viewContent_user,
@@ -54,6 +70,16 @@ export const createForum = async (data, userId) => {
         },
       },
     });
+
+    await prisma.forumPermission.update({
+      where: {
+        id: forum.permissionId,
+      },
+      data: {
+        forum: { connect: { id: forum.id } },
+      },
+    });
+
     return redirect('/admin/forums');
   } catch (error) {
     console.log(`Error occurred: ${error.message}`);

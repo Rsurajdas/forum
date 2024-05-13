@@ -19,7 +19,7 @@ const sessionStorage = createCookieSessionStorage({
 
 const createSession = async (id, redirectPath) => {
   const session = await sessionStorage.getSession();
-  session.set('userId', id);
+  session.set('profileId', id);
   return redirect(redirectPath, {
     headers: {
       'Set-Cookie': await sessionStorage.commitSession(session),
@@ -31,7 +31,7 @@ export const getUserFromSession = async (request) => {
   const session = await sessionStorage.getSession(
     request.headers.get('Cookie')
   );
-  const userId = session.get('userId');
+  const userId = session.get('profileId');
 
   if (!userId) {
     return null;
@@ -41,9 +41,9 @@ export const getUserFromSession = async (request) => {
 };
 
 export const requireUserSession = async (request) => {
-  const userId = getUserFromSession(request);
+  const profileId = getUserFromSession(request);
 
-  if (!userId) {
+  if (!profileId) {
     throw redirect('/login');
   }
 };
@@ -88,12 +88,12 @@ export const createUser = async (credentials) => {
       throw validationErrors;
     }
 
-    const hasedPassword = await bcrypt.hash(credentials.password, 12);
+    const hashedPassword = await bcrypt.hash(credentials.password, 12);
 
     const user = await prisma.user.create({
       data: {
         email: credentials.email.toLowerCase(),
-        password: hasedPassword,
+        password: hashedPassword,
         lastLoggedin: new Date(Date.now()),
         profile: {
           create: {
@@ -109,7 +109,7 @@ export const createUser = async (credentials) => {
       },
     });
 
-    return createSession(user.id, '/');
+    return createSession(user.profile.id, '/');
   } catch (error) {
     console.log(`Error occurred: ${error.message}`);
 
@@ -172,21 +172,17 @@ export const loginUser = async (credentials) => {
   }
 };
 
-export const logoutUser = async (request, userId) => {
+export const logoutUser = async (request, profileId) => {
   const session = await sessionStorage.getSession(
     request.headers.get('Cookie')
   );
 
-  await prisma.user.update({
+  await prisma.profile.update({
     where: {
-      id: userId,
+      id: profileId,
     },
     data: {
-      profile: {
-        update: {
-          isUserLive: false,
-        },
-      },
+      isUserLive: false,
     },
   });
 

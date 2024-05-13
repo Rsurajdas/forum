@@ -9,6 +9,7 @@ export default function SignupPage() {
   return (
     <>
       <div className="w-1/3 mx-auto flex items-center justify-center">
+        {/* !todo Role error handling */}
         <Form className="w-full" method='post'>
           <div className="text-center mb-10">
             <h1 className="text-5xl font-medium">Sign up</h1>
@@ -18,7 +19,7 @@ export default function SignupPage() {
 
           <TextInput placeholder="Email" name='email' rightSection={<IconAt />} mt="lg" error={data?.credential || data?.email} />
 
-          <PasswordInput placeholder="Password" mt="lg" variant="default" name='password' error={data?.password} />
+          <PasswordInput placeholder="Password" mt="lg" variant="default" name='password' error={data?.password || data?.confirmpassword} />
 
           <PasswordInput placeholder="Confirm Password" mt="lg" variant="default" name='confirmpassword' error={data?.confirmpassword} />
 
