@@ -39,7 +39,8 @@ export const createForum = async (data, userId) => {
         },
         userPermissions: {
           create: {
-            viewContent: !!data.viewContent_user,
+            viewContentGuest: !!data.viewContent_guest,
+            viewContentUser: !!data.viewContent_user,
             createTopic: !!data.createTopic,
             uploadFiles: !!data.uploadFiles,
             autoApproveTopic: !!data.autoApproveTopic,
@@ -49,11 +50,6 @@ export const createForum = async (data, userId) => {
             autoApproveComment: !!data.autoApproveComment,
             editComment: !!data.editComment,
             deleteComment: !!data.deleteComment,
-          },
-        },
-        guestPermissions: {
-          create: {
-            viewContent: !!data.viewContent_guest,
           },
         },
       },

@@ -79,24 +79,22 @@ model Folder {
 }
 
 model Forum {
-  id                String          @id @default(auto()) @map("_id") @db.ObjectId
-  title             String
-  description       String
-  status            Boolean
-  position          Int
-  moderator         Profile?        @relation("ForumModerator", fields: [moderatorId], references: [id])
-  moderatorId       String?         @db.ObjectId
-  createdBy         Profile?        @relation("ForumAdmin", fields: [createdById], references: [id])
-  createdById       String?         @db.ObjectId
-  parent            Folder          @relation(fields: [folderId], references: [id])
-  folderId          String          @db.ObjectId
-  userPermissions   ForumPermission @relation("User", fields: [userPermissionId], references: [id])
-  userPermissionId  String          @db.ObjectId
-  guestPermissions  ForumPermission @relation("Guest", fields: [guestPermissionId], references: [id])
-  guestPermissionId String          @db.ObjectId
-  topics            Topic[]
-  followers         Profile[]       @relation("ForumFollower", fields: [followerIds], references: [id])
-  followerIds       String[]        @db.ObjectId
+  id           String          @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  description  String
+  status       Boolean
+  position     Int
+  moderator    Profile?        @relation("ForumModerator", fields: [moderatorId], references: [id])
+  moderatorId  String?         @db.ObjectId
+  createdBy    Profile?        @relation("ForumAdmin", fields: [createdById], references: [id])
+  createdById  String?         @db.ObjectId
+  parent       Folder          @relation(fields: [folderId], references: [id])
+  folderId     String          @db.ObjectId
+  permissions  ForumPermission @relation("User", fields: [permissionId], references: [id])
+  permissionId String          @db.ObjectId
+  topics       Topic[]
+  followers    Profile[]       @relation("ForumFollower", fields: [followerIds], references: [id])
+  followerIds  String[]        @db.ObjectId
 }
 
 model Topic {
@@ -133,7 +131,8 @@ model Post {
 
 model ForumPermission {
   id                 String   @id @default(auto()) @map("_id") @db.ObjectId
-  viewContent        Boolean?
+  viewContentGuest   Boolean?
+  viewContentUser    Boolean?
   createTopic        Boolean?
   uploadFiles        Boolean?
   autoApproveTopic   Boolean?
@@ -144,5 +143,4 @@ model ForumPermission {
   editComment        Boolean?
   deleteComment      Boolean?
   userForum          Forum[]  @relation("User")
-  guestForum         Forum[]  @relation("Guest")
 }
