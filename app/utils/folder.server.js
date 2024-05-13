@@ -1,3 +1,4 @@
+import slugify from 'slugify';
 import { prisma } from './database.server';
 
 export const createFolder = async (data) => {
@@ -14,6 +15,7 @@ export const createFolder = async (data) => {
         description: data.description,
         status: data.status === 'on',
         position: +data.position,
+        slug: slugify(data.title, { lower: true }),
       },
     });
   } catch (error) {
@@ -28,6 +30,25 @@ export const createFolder = async (data) => {
 export const getAllFolders = async () => {
   try {
     return await prisma.folder.findMany({
+      include: {
+        forums: true,
+      },
+    });
+  } catch (error) {
+    console.log(`Error occurred: ${error.message}`);
+
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+export const getFolderBySlug = async (slug) => {
+  try {
+    return await prisma.folder.findUnique({
+      where: {
+        slug: slug,
+      },
       include: {
         forums: true,
       },

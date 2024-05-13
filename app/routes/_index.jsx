@@ -30,7 +30,7 @@ export default function Index() {
   return (
     <>
       {console.log(profileId)}
-      <main className="ml-20 mt-14">
+      <main className="mt-14">
         <section className="py-12">
           <div className="xl:container">
             <div className="flex flex-col items-start gap-y-4">

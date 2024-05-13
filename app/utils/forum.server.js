@@ -1,5 +1,6 @@
 import { redirect } from '@remix-run/react';
 import { prisma } from './database.server';
+import slugify from 'slugify';
 
 export const createForum = async (data, profileId) => {
   try {
@@ -68,6 +69,7 @@ export const createForum = async (data, profileId) => {
             deleteComment: !!data.deleteComment,
           },
         },
+        slug: slugify(data.title, { lower: true }),
       },
     });
 

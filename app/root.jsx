@@ -42,7 +42,7 @@ export function ErrorBoundary() {
         <Links />
       </head>
       <body>
-        <main className="ml-20 mt-14">
+        <main className="mt-14">
           <h1>{error.message}</h1>
         </main>
         {/* add the UI you want your users to see */}

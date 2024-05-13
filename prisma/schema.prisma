@@ -76,6 +76,7 @@ model Folder {
   status      Boolean
   position    Int
   forums      Forum[]
+  slug        String  @unique
 }
 
 model Forum {
@@ -95,6 +96,7 @@ model Forum {
   topics       Topic[]
   followers    Profile[]       @relation("ForumFollower", fields: [followerIds], references: [id])
   followerIds  String[]        @db.ObjectId
+  slug         String          @unique
 }
 
 model Topic {
@@ -103,7 +105,6 @@ model Topic {
   description String
   forum       Forum?   @relation(fields: [forumId], references: [id])
   forumId     String?  @db.ObjectId
-  slug        String
   status      String
   islock      Boolean
   user        Profile  @relation(fields: [profileId], references: [id])
@@ -112,6 +113,7 @@ model Topic {
   tagsId      String[] @db.ObjectId
   file        String
   likes       Like[]
+  slug        String   @unique
 }
 
 model Tag {

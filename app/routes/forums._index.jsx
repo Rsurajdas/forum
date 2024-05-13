@@ -11,9 +11,10 @@ export const loader = async () => {
 }
 
 export default function ForumPage() {
-  const [folder, setFolder] = useState(['Announcement']);
   const data = useLoaderData()
   const sortedFolders = data?.folder.sort((a, b) => a.position - b.position)
+  const activeFolders = sortedFolders.filter(item => item.forums.length).map(item => item.title)
+  const [folder, setFolder] = useState(activeFolders);
 
   return (
     <>
@@ -26,12 +27,12 @@ export default function ForumPage() {
         {sortedFolders.map((item) => (
           <Accordion.Item key={item.id} value={item.title}>
             <Accordion.Control icon={<IconFolder />}>
-              <Link to="">
+              <Link to={`/forums/folder/${item.slug}`}>
                 {item.title}
               </Link>
             </Accordion.Control>
             <Accordion.Panel>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 py-4 px-2">
                 {item.forums.length ? item.forums.map((forum) => (
                   <ForumList
                     key={forum.id}
