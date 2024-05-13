@@ -100,20 +100,20 @@ model Forum {
 }
 
 model Topic {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
-  forum       Forum?   @relation(fields: [forumId], references: [id])
-  forumId     String?  @db.ObjectId
-  status      String
-  islock      Boolean
-  user        Profile  @relation(fields: [profileId], references: [id])
-  profileId   String   @db.ObjectId
-  tags        Tag[]    @relation(fields: [tagsId], references: [id])
-  tagsId      String[] @db.ObjectId
-  file        String
-  likes       Like[]
-  slug        String   @unique
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  forum     Forum?   @relation(fields: [forumId], references: [id])
+  forumId   String?  @db.ObjectId
+  status    String
+  islock    Boolean
+  user      Profile  @relation(fields: [profileId], references: [id])
+  profileId String   @db.ObjectId
+  tags      Tag[]    @relation(fields: [tagsId], references: [id])
+  tagsId    String[] @db.ObjectId
+  file      String
+  likes     Like[]
+  slug      String   @unique
+  post      Post[]
 }
 
 model Tag {
@@ -129,6 +129,8 @@ model Post {
   user      Profile? @relation(fields: [profileId], references: [id])
   profileId String?  @db.ObjectId
   likes     Like[]
+  Topic     Topic?   @relation(fields: [topicId], references: [id])
+  topicId   String?  @db.ObjectId
 }
 
 model ForumPermission {

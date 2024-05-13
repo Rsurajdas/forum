@@ -11,10 +11,10 @@ export const loader = async ({ request, params }) => {
 
 export default function SingleForumPage() {
   const { forum } = useLoaderData()
+
   return (
     <>
-      {console.log(forum)}
-      <div className="">
+      <div>
         <h1 className="text-3xl text-gray-900 mb-2">{forum.title}</h1>
         <p className="text-sm text-stone-600">{forum.description}</p>
       </div>
