@@ -19,7 +19,6 @@ export default function ForumCreatePage() {
 
   return (
     <>
-      {console.log(navigation)}
       <div className="mb-8">
         <Tooltip label="back" position="top">
           <Button variant="light" size="compact-md" color="indigo" onClick={() => navigate('..')}>
@@ -28,7 +27,7 @@ export default function ForumCreatePage() {
         </Tooltip>
       </div>
       <div className="mb-6">
-        <Title order={2} style={{ fontFamily: `ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace` }}>Create new forum</Title>
+        <Title order={2} className="text-stone-600" style={{ fontFamily: `ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace` }}>Create new forum</Title>
       </div>
       <Form method="post">
         <div className="flex gap-6 items-start">

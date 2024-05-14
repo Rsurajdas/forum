@@ -1,5 +1,6 @@
 .tiptap {
   padding: 1rem;
+  height: 200px;
 }
 .tiptap:focus {
   outline: none;

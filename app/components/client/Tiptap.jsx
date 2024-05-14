@@ -5,8 +5,9 @@ import Placeholder from '@tiptap/extension-placeholder';
 import TextAlign from '@tiptap/extension-text-align';
 import Color from '@tiptap/extension-color';
 
-export default function Tiptap() {
+export default function Tiptap({ content, fieldname, handleChange }) {
   const editor = useEditor({
+    content: content,
     extensions: [
       StarterKit,
       Placeholder.configure({
@@ -19,6 +20,9 @@ export default function Tiptap() {
         types: ['textStyle'],
       }),
     ],
+    onTransaction: () => {
+      handleChange(fieldname, editor?.getHTML());
+    },
   });
 
   return (

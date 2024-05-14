@@ -12,7 +12,7 @@ export default function ForumList({
     <div className="flex justify-between w-full items-center">
       <div className="w-5/6">
         <Link to={`/forums/${slug}`} className="hover:underline">
-          <h3 className="text-indigo-700  font-semibold text-lg">{title}</h3>
+          <h3 className="text-indigo-700 font-semibold text-lg">{title}</h3>
         </Link>
         <p className="text-gray-500">{description}</p>
       </div>

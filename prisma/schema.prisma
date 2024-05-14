@@ -114,6 +114,8 @@ model Topic {
   likes     Like[]
   slug      String   @unique
   post      Post[]
+  createdAt DateTime @default(now())
+  views     Int
 }
 
 model Tag {

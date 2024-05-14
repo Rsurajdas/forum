@@ -2,6 +2,7 @@ import { Link, json, useLoaderData } from "@remix-run/react"
 import { getForumBySlug } from "../utils/forum.server"
 import { Badge } from "@mantine/core"
 import { IconRss } from "@tabler/icons-react"
+import TopicList from "../components/client/TopicList"
 
 // eslint-disable-next-line no-unused-vars
 export const loader = async ({ request, params }) => {
@@ -22,7 +23,7 @@ export default function SingleForumPage() {
         <Badge color="violet" size="lg">Tags</Badge>
       </div>
       <div className="flex mt-6 w-full justify-between border-b border-gray-200 pb-4">
-        <Link to={''} className="bg-indigo-700 text-white py-2 px-4 text-sm rounded-sm transition-all ease-in active:translate-y-1">
+        <Link to="/forums/topic/create" className="bg-indigo-700 text-white py-2 px-4 text-sm rounded-sm transition-all ease-in active:translate-y-1">
           Create topic
         </Link>
         <div className="flex gap-2">
@@ -36,6 +37,10 @@ export default function SingleForumPage() {
             <IconRss /> Follow
           </button>
         </div>
+      </div>
+      <div className="flex flex-col">
+        <TopicList title="Out with the old, in with the new?" user="suraj kumar" createdAt="17h" />
+        <TopicList title="Out with the old, in with the new?" user="suraj kumar" createdAt="17h" />
       </div>
     </>
   )
