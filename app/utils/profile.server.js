@@ -1,11 +1,11 @@
 import { json } from '@remix-run/node';
 import { prisma } from './database.server';
 
-export const getProfile = async (userId) => {
+export const getProfile = async (profileId) => {
   try {
     const profile = await prisma.profile.findUnique({
       where: {
-        userId: userId,
+        id: profileId,
       },
       include: {
         user: {
@@ -14,7 +14,7 @@ export const getProfile = async (userId) => {
             lastLoggedin: true,
           },
         },
-        role: true,
+        roles: true,
       },
     });
     return json({ profile });

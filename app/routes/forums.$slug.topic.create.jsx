@@ -3,6 +3,8 @@ import { Form, useNavigation, useSubmit } from "@remix-run/react";
 import Tiptap from "../components/client/Tiptap"
 import tiptapStyles from "../styles/Tiptap.css?url"
 import { useState } from "react";
+import { getUserFromSession } from "../utils/auth.server";
+import { createTopic } from "../utils/topic.server";
 
 export default function TopicCreatePage() {
   const navigation = useNavigation()
@@ -10,7 +12,7 @@ export default function TopicCreatePage() {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
-    tags: ["react"]
+    tags: []
   })
 
   const handleformData = (event) => {
@@ -54,9 +56,11 @@ export default function TopicCreatePage() {
 
 export const links = () => [{ rel: "stylesheet", href: tiptapStyles }]
 
-export const action = async ({ request }) => {
+export const action = async ({ request, params }) => {
   const formData = await request.formData()
   const data = Object.fromEntries(formData)
-  console.log(data)
-  return null
+  const { slug } = params
+  const profileId = await getUserFromSession(request)
+
+  return createTopic(profileId, slug, data)
 }

@@ -102,37 +102,37 @@ model Forum {
 model Topic {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
-  forum     Forum?   @relation(fields: [forumId], references: [id])
-  forumId   String?  @db.ObjectId
-  status    String
+  forum     Forum    @relation(fields: [forumId], references: [id])
+  forumId   String   @db.ObjectId
+  status    Boolean
   islock    Boolean
   user      Profile  @relation(fields: [profileId], references: [id])
   profileId String   @db.ObjectId
   tags      Tag[]    @relation(fields: [tagsId], references: [id])
   tagsId    String[] @db.ObjectId
-  file      String
+  file      String?
   likes     Like[]
   slug      String   @unique
-  post      Post[]
+  posts     Post[]
   createdAt DateTime @default(now())
-  views     Int
+  views     Int?
 }
 
 model Tag {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  title    String
-  topic    Topic[]  @relation(fields: [topicIds], references: [id])
+  title    String   @unique
+  topics   Topic[]  @relation(fields: [topicIds], references: [id])
   topicIds String[] @db.ObjectId
 }
 
 model Post {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
   comment   String
-  user      Profile? @relation(fields: [profileId], references: [id])
-  profileId String?  @db.ObjectId
+  user      Profile @relation(fields: [profileId], references: [id])
+  profileId String  @db.ObjectId
   likes     Like[]
-  Topic     Topic?   @relation(fields: [topicId], references: [id])
-  topicId   String?  @db.ObjectId
+  Topic     Topic   @relation(fields: [topicId], references: [id])
+  topicId   String  @db.ObjectId
 }
 
 model ForumPermission {

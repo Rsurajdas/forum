@@ -100,8 +100,21 @@ export const getForumBySlug = async (slug) => {
       },
       include: {
         permissions: true,
-        topics: true,
-        followers: true,
+        topics: {
+          include: {
+            posts: {
+              select: {
+                id: true,
+              },
+            },
+            user: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
   } catch (error) {
