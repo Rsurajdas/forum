@@ -4,8 +4,8 @@ import DetailLabel from './DetailLabel';
 export default function ForumList({
   title,
   description,
-  topics,
-  posts,
+  topicCounts,
+  postCounts,
   slug
 }) {
   return (
@@ -18,8 +18,8 @@ export default function ForumList({
       </div>
       <div className="w-1/6">
         <div className="flex gap-6 justify-end">
-          <DetailLabel value={topics} title="Topics" />
-          <DetailLabel value={posts} title="Posts" />
+          <DetailLabel value={topicCounts} title="Topics" />
+          <DetailLabel value={postCounts} title="Posts" />
         </div>
       </div>
     </div>

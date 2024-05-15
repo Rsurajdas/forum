@@ -16,7 +16,7 @@ export default function SingleForumPage() {
 
   return (
     <>
-      {console.log(forum)}
+
       <div>
         <h1 className="text-3xl text-gray-900 mb-2">{forum.title}</h1>
         <p className="text-sm text-stone-600">{forum.description}</p>

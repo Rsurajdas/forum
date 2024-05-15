@@ -15,8 +15,8 @@ export default function AdminForumsIndexPage() {
   const query = searchParams.get("create")
   const [create, setCreate] = useState(query)
   const [checked, setChecked] = useState(false)
-  const folders = useLoaderData()
-  const sortedFolders = folders.sort((a, b) => a.position - b.position)
+  const { folders } = useLoaderData()
+
 
   useEffect(() => {
     if (query) {
@@ -70,7 +70,7 @@ export default function AdminForumsIndexPage() {
         </div>
       </div>
       <div className="flex w-full flex-col gap-y-4">
-        {sortedFolders.map((folder, idx) => <div key={idx} className="border border-gray-300 rounded-md shadow-sm bg-white w-full">
+        {folders.map((folder, idx) => <div key={idx} className="border border-gray-300 rounded-md shadow-sm bg-white w-full">
           <div className="flex justify-between w-full py-3 px-6 items-center border-b border-gray-100">
             <Link to="/">
               <h3>{folder.title}</h3>
@@ -82,7 +82,7 @@ export default function AdminForumsIndexPage() {
           </div>
           {folder.forums.map(forum => (
             <div key={forum.id} className="flex gap-y-4 w-full py-3 px-6 items-center gap-x-8">
-              <ForumList {...forum} />
+              <ForumList {...forum} topicCounts={folder.topicCounts} />
               <div className="flex gap-x-4">
                 <Button variant="light" color="indigo" size="compact-md"><IconEye /></Button>
                 <Button variant="filled" color="indigo" size="compact-md"><IconEdit /></Button>

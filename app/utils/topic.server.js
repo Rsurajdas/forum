@@ -10,6 +10,12 @@ export const createTopic = async (profileId, slug, data) => {
       throw error;
     }
 
+    if (!data.tags) {
+      const error = new Error('Invalid tags, tags must not be empty.');
+      error.statusCode = 404;
+      throw error;
+    }
+
     const forum = await prisma.forum.findUnique({
       where: {
         slug: slug,
@@ -70,6 +76,7 @@ export const createTopic = async (profileId, slug, data) => {
     return redirect(`/forums/${slug}`);
   } catch (error) {
     console.log(`Error Occured: ${error.message}`);
+
     throw error;
   } finally {
     await prisma.$disconnect();

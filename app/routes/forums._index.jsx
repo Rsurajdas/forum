@@ -1,4 +1,4 @@
-import { Link, json, useLoaderData } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 import { Accordion } from '@mantine/core';
 import { IconFolder } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -7,13 +7,12 @@ import { getAllFolders } from '../utils/folder.server';
 import Empty from '../components/client/Empty';
 
 export const loader = async () => {
-  return json({ folder: await getAllFolders() })
+  return await getAllFolders()
 }
 
 export default function ForumPage() {
-  const data = useLoaderData()
-  const sortedFolders = data?.folder.sort((a, b) => a.position - b.position)
-  const activeFolders = sortedFolders.filter(item => item.forums.length).map(item => item.title)
+  const { folders } = useLoaderData()
+  const activeFolders = folders.filter(folder => folder.forums.length).map(folder => folder.title)
   const [folder, setFolder] = useState(activeFolders);
 
   return (
@@ -24,19 +23,20 @@ export default function ForumPage() {
         value={folder}
         onChange={setFolder}
       >
-        {sortedFolders.map((item) => (
-          <Accordion.Item key={item.id} value={item.title}>
+        {folders.map((folder) => (
+          <Accordion.Item key={folder.id} value={folder.title}>
             <Accordion.Control icon={<IconFolder />}>
-              <Link to={`/forums/folder/${item.slug}`}>
-                {item.title}
+              <Link to={`/forums/folder/${folder.slug}`}>
+                {folder.title}
               </Link>
             </Accordion.Control>
             <Accordion.Panel>
               <div className="flex flex-col gap-4 py-4 px-2">
-                {item.forums.length ? item.forums.map((forum) => (
+                {folder?.forums?.length ? folder?.forums.map((forum) => (
                   <ForumList
                     key={forum.id}
                     {...forum}
+                    topicCounts={folder.topicCounts}
                   />
                 )) : <Empty />}
               </div>

@@ -125,3 +125,20 @@ export const getForumBySlug = async (slug) => {
     await prisma.$disconnect();
   }
 };
+
+export const getTopicCount = async () => {
+  try {
+    return await prisma.forum.findMany({
+      select: {
+        id: true,
+        _count: {
+          select: { topics: true },
+        },
+      },
+    });
+  } catch (error) {
+    console.log(`Error occurred: ${error.message}`);
+  } finally {
+    await prisma.$disconnect();
+  }
+};

@@ -125,6 +125,13 @@ export const loginUser = async (credentials) => {
       where: {
         email: credentials.email,
       },
+      include: {
+        profile: {
+          select: {
+            id: true,
+          },
+        },
+      },
     });
 
     if (!exitingUser) {
@@ -158,7 +165,7 @@ export const loginUser = async (credentials) => {
       },
     });
 
-    return createSession(exitingUser.id, '/');
+    return createSession(exitingUser?.profile.id, '/');
   } catch (error) {
     console.log(`Error occurred: ${error.message}`);
 
