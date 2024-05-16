@@ -7,6 +7,9 @@ export default {
         101: '1.01',
         102: '1.02',
       },
+      fontFamily: {
+        404: ['titillium web', 'sans-serif'],
+      },
     },
     container: {
       center: true,

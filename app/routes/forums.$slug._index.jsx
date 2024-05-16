@@ -3,26 +3,31 @@ import { getForumBySlug } from "../utils/forum.server"
 import { Badge } from "@mantine/core"
 import { IconRss } from "@tabler/icons-react"
 import TopicList from "../components/client/TopicList"
+import { getTagsByForum } from "../utils/tag.server"
 
 // eslint-disable-next-line no-unused-vars
 export const loader = async ({ request, params }) => {
   const { slug } = params
-  return json({ forum: await getForumBySlug(slug) })
+
+  return json({ forum: await getForumBySlug(slug), tags: await getTagsByForum(slug) })
 }
 
 export default function SingleForumPage() {
-  const { forum } = useLoaderData()
+  const { forum, tags } = useLoaderData()
   const { slug } = useParams()
 
   return (
     <>
-
       <div>
         <h1 className="text-3xl text-gray-900 mb-2">{forum.title}</h1>
         <p className="text-sm text-stone-600">{forum.description}</p>
       </div>
-      <div className="flex mt-6">
-        <Badge color="violet" size="lg">Tags</Badge>
+      <div className="flex mt-6 gap-x-2">
+        {tags?.map(tag => (
+          <Link to={`/${tag.id}`} key={tag.id}>
+            <Badge color="violet" size="lg">{tag.title}
+            </Badge>
+          </Link>))}
       </div>
       <div className="flex mt-6 w-full justify-between border-b border-gray-200 pb-4">
         {forum?.permissions?.createTopic ? <Link to={`/forums/${slug}/topic/create`} className="bg-indigo-700 text-white py-2 px-4 text-sm rounded-sm transition-all ease-in active:translate-y-1">

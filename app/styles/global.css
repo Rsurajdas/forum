@@ -3,8 +3,11 @@
   background-color: #fff;
 }
 .mantine-Accordion-control[data-active='true'] {
-  background-color: var(--mantine-color-indigo-8);
-  color: #fff;
+  background-color: var(--mantine-color-indigo-1);
+  color: var(--mantine-color-indigo-8);
+}
+.mantine-Accordion-control .mantine-Accordion-label {
+  font-weight: 600;
 }
 .mantine-Accordion-item {
   /* margin-bottom: 1rem; */

@@ -17,6 +17,7 @@ export default function ForumPage() {
 
   return (
     <>
+      {console.log(folders)}
       <Accordion
         variant="separated"
         disableChevronRotation
@@ -36,7 +37,8 @@ export default function ForumPage() {
                   <ForumList
                     key={forum.id}
                     {...forum}
-                    topicCounts={folder.topicCounts}
+                    topicCount={forum.topicCount}
+                    postCount={forum.postCount}
                   />
                 )) : <Empty />}
               </div>

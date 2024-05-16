@@ -41,35 +41,51 @@ export const getAllFolders = async () => {
           orderBy: {
             position: 'asc',
           },
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            position: true,
+            slug: true,
+            _count: {
+              select: {
+                topics: true,
+              },
+            },
+            topics: {
+              select: {
+                _count: {
+                  select: {
+                    posts: true,
+                  },
+                },
+              },
+            },
+          },
         },
       },
       orderBy: {
         position: 'asc',
       },
     });
-    const topicCounts = await prisma.forum.findMany({
-      select: {
-        parent: {
-          select: {
-            id: true,
-          },
-        },
-        _count: {
-          select: {
-            topics: true,
-          },
-        },
-      },
-    });
+
     const result = folders.map((folder) => {
-      const topicCount = topicCounts.find(
-        (topicCount) => topicCount.parent.id === folder.id
-      );
       return {
         ...folder,
-        topicCounts: topicCount?._count?.topics || 0,
+        forums: folder.forums.map((forum) => {
+          const postCount = forum.topics.reduce(
+            (total, topic) => total + topic._count.posts,
+            0
+          );
+          return {
+            ...forum,
+            topicCount: forum._count.topics,
+            postCount,
+          };
+        }),
       };
     });
+
     return json({ folders: result });
   } catch (error) {
     console.log(`Error occurred: ${error.message}`);

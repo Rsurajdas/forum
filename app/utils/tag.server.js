@@ -1,20 +1,33 @@
 import { prisma } from './database.server';
 
-export const getTagsByForumId = async (forumId) => {
+export const getTagsByForum = async (slug) => {
   try {
-    if (!forumId) {
-      const error = new Error('Invalid forumId, forumId must not be empty.');
-      error.statusCode = 404;
-      throw error;
-    }
-
-    return await prisma.tag.findMany({
-      where: {
-        forum: {
-          id: forumId,
+    const forumWithTags = await prisma.forum.findFirst({
+      where: { slug: slug },
+      select: {
+        topics: {
+          select: {
+            tags: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
+          },
         },
       },
     });
+
+    const allTags = forumWithTags.topics.flatMap((topic) => topic.tags);
+
+    const uniqueTags = allTags.reduce((arr, tag) => {
+      if (!arr.find((t) => t.id === tag.id)) {
+        arr.push(tag);
+      }
+      return arr;
+    }, []);
+
+    return uniqueTags;
   } catch (error) {
     console.log(`Error occurred ${error.message}`);
 

@@ -4,6 +4,8 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
+  useNavigate,
   useRouteError,
 } from '@remix-run/react';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
@@ -34,6 +36,7 @@ export function Layout({ children }) {
 
 export function ErrorBoundary() {
   const error = useRouteError();
+  const navigate = useNavigate()
   return (
     <html lang="en">
       <head>
@@ -42,10 +45,31 @@ export function ErrorBoundary() {
         <Links />
       </head>
       <body>
-        <main className="mt-14">
-          <h1>{error.message}</h1>
+        <main>
+          <section className='relative h-screen'>
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-3xl w-full leading-normal py-4">
+              <div className="relative h-[150px] leading-[150px] mb-6">
+                <h1 className='font-404 text-[186px] font-black m-0 uppercase text-gray-300'>
+                  {error.status}
+                </h1>
+              </div>
+              <h2 className='font-404 text-[26px] font-bold m-0 text-gray-600'>
+                {isRouteErrorResponse(error)
+                  ? error.statusText
+                  : error instanceof Error
+                    ? error.message
+                    : "Unknown Error"
+                }
+              </h2>
+              <p className='text-sm font-semibold uppercase mb-0 text-gray-600'>Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily unavailable</p>
+              <button
+                className="bg-indigo-700 text-white py-2 px-6 text-base rounded-sm transition-all ease-in active:translate-y-1 mt-4"
+                onClick={() => navigate(-1)}>
+                Back
+              </button>
+            </div>
+          </section>
         </main>
-        {/* add the UI you want your users to see */}
         <Scripts />
       </body>
     </html>

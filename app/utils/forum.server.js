@@ -94,7 +94,7 @@ export const createForum = async (data, profileId) => {
 
 export const getForumBySlug = async (slug) => {
   try {
-    return await prisma.forum.findUnique({
+    const forum = await prisma.forum.findUnique({
       where: {
         slug: slug,
       },
@@ -117,6 +117,15 @@ export const getForumBySlug = async (slug) => {
         },
       },
     });
+
+    if (!forum) {
+      throw new Response(null, {
+        status: 404,
+        statusText: 'Oops! This Page Could Not Be Found',
+      });
+    }
+
+    return forum;
   } catch (error) {
     console.log(`Error occurred: ${error.message}`);
 
