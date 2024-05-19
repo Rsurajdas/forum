@@ -1,4 +1,4 @@
-import { redirect } from '@remix-run/react';
+import { redirect } from '@remix-run/node';
 import { prisma } from './database.server';
 import slugify from 'slugify';
 
@@ -98,19 +98,46 @@ export const getForumBySlug = async (slug) => {
       where: {
         slug: slug,
       },
-      include: {
-        permissions: true,
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        status: true,
+        position: true,
+        slug: true,
+        followerIds: true,
+        permissions: {
+          select: {
+            createTopic: true,
+          },
+        },
+        _count: {
+          select: {
+            topics: true,
+            followers: true,
+          },
+        },
         topics: {
-          include: {
-            posts: {
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            views: true,
+            _count: {
               select: {
-                id: true,
+                posts: true,
               },
             },
             user: {
               select: {
                 id: true,
                 name: true,
+              },
+            },
+            tags: {
+              select: {
+                id: true,
+                title: true,
               },
             },
           },
@@ -135,18 +162,52 @@ export const getForumBySlug = async (slug) => {
   }
 };
 
-export const getTopicCount = async () => {
+export const followForum = async (slug, profileId) => {
   try {
-    return await prisma.forum.findMany({
-      select: {
-        id: true,
-        _count: {
-          select: { topics: true },
+    if (!profileId) {
+      console.log('Please login to follow');
+      return null;
+    }
+
+    const isFollowing = await prisma.forum.findFirst({
+      where: {
+        followerIds: {
+          has: profileId,
         },
       },
     });
+
+    if (!isFollowing) {
+      return await prisma.forum.update({
+        where: {
+          slug: slug,
+        },
+        data: {
+          subscribers: {
+            connect: {
+              id: profileId,
+            },
+          },
+        },
+      });
+    } else {
+      return await prisma.forum.update({
+        where: {
+          slug: slug,
+        },
+        data: {
+          subscribers: {
+            disconnect: {
+              id: profileId,
+            },
+          },
+        },
+      });
+    }
   } catch (error) {
     console.log(`Error occurred: ${error.message}`);
+
+    throw error;
   } finally {
     await prisma.$disconnect();
   }

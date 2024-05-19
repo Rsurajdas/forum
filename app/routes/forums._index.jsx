@@ -17,7 +17,6 @@ export default function ForumPage() {
 
   return (
     <>
-      {console.log(folders)}
       <Accordion
         variant="separated"
         disableChevronRotation

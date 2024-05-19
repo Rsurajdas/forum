@@ -1,6 +1,6 @@
 import slugify from 'slugify';
 import { prisma } from './database.server';
-import { json } from '@remix-run/react';
+import { json } from '@remix-run/node';
 
 export const createFolder = async (data) => {
   try {
@@ -98,7 +98,7 @@ export const getAllFolders = async () => {
 
 export const getFolderBySlug = async (slug) => {
   try {
-    return await prisma.folder.findUnique({
+    const folder = await prisma.folder.findUnique({
       where: {
         slug: slug,
       },
@@ -106,6 +106,15 @@ export const getFolderBySlug = async (slug) => {
         forums: true,
       },
     });
+
+    if (!folder) {
+      throw new Response(null, {
+        status: 404,
+        statusText: 'Oops! This Page Could Not Be Found',
+      });
+    }
+
+    return folder;
   } catch (error) {
     console.log(`Error occurred: ${error.message}`);
 

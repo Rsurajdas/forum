@@ -26,29 +26,29 @@ model User {
 }
 
 model Profile {
-  id                String    @id @default(auto()) @map("_id") @db.ObjectId
-  name              String
-  title             String?
-  about             String?
-  image             String?
-  profileViews      Int?      @default(0)
-  isUserLive        Boolean
-  status            Boolean
-  followedBy        Profile[] @relation("Profilefollows", fields: [followedByIds], references: [id])
-  followedByIds     String[]  @db.ObjectId
-  following         Profile[] @relation("Profilefollows", fields: [followingIds], references: [id])
-  followingIds      String[]  @db.ObjectId
-  user              User      @relation(fields: [userId], references: [id])
-  userId            String    @unique @db.ObjectId
-  moderatorOf       Forum[]   @relation("ForumModerator")
-  adminOf           Forum[]   @relation("ForumAdmin")
-  topics            Topic[]
-  roles             Role[]    @relation(fields: [roleId], references: [id])
-  roleId            String[]  @db.ObjectId
-  forumFollowing    Forum[]   @relation("ForumFollower", fields: [forumFollowingIds], references: [id])
-  forumFollowingIds String[]  @db.ObjectId
-  likes             Like[]
-  Post              Post[]
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  name                String
+  title               String?
+  about               String?
+  image               String?
+  profileViews        Int?      @default(0)
+  isUserLive          Boolean
+  status              Boolean
+  followedBy          Profile[] @relation("Profilefollows", fields: [followedByIds], references: [id])
+  followedByIds       String[]  @db.ObjectId
+  following           Profile[] @relation("Profilefollows", fields: [followingIds], references: [id])
+  followingIds        String[]  @db.ObjectId
+  user                User      @relation(fields: [userId], references: [id])
+  userId              String    @unique @db.ObjectId
+  moderatorOf         Forum[]   @relation("ForumModerator")
+  adminOf             Forum[]   @relation("ForumAdmin")
+  topics              Topic[]
+  roles               Role[]    @relation(fields: [roleId], references: [id])
+  roleId              String[]  @db.ObjectId
+  subscribedForums    Forum[]   @relation("ForumFollower", fields: [subscribedForumsIds], references: [id])
+  subscribedForumsIds String[]  @db.ObjectId
+  likes               Like[]
+  posts               Post[]
 }
 
 model Like {
@@ -80,23 +80,23 @@ model Folder {
 }
 
 model Forum {
-  id           String          @id @default(auto()) @map("_id") @db.ObjectId
-  title        String
-  description  String
-  status       Boolean
-  position     Int
-  moderator    Profile?        @relation("ForumModerator", fields: [moderatorId], references: [id])
-  moderatorId  String?         @db.ObjectId
-  createdBy    Profile?        @relation("ForumAdmin", fields: [createdById], references: [id])
-  createdById  String?         @db.ObjectId
-  parent       Folder          @relation(fields: [folderId], references: [id])
-  folderId     String          @db.ObjectId
-  permissions  ForumPermission @relation(fields: [permissionId], references: [id])
-  permissionId String          @unique @db.ObjectId
-  topics       Topic[]
-  followers    Profile[]       @relation("ForumFollower", fields: [followerIds], references: [id])
-  followerIds  String[]        @db.ObjectId
-  slug         String          @unique
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  description   String
+  status        Boolean
+  position      Int
+  moderator     Profile?        @relation("ForumModerator", fields: [moderatorId], references: [id])
+  moderatorId   String?         @db.ObjectId
+  createdBy     Profile?        @relation("ForumAdmin", fields: [createdById], references: [id])
+  createdById   String?         @db.ObjectId
+  parent        Folder          @relation(fields: [folderId], references: [id])
+  folderId      String          @db.ObjectId
+  permissions   ForumPermission @relation(fields: [permissionId], references: [id])
+  permissionId  String          @unique @db.ObjectId
+  topics        Topic[]
+  subscribers   Profile[]       @relation("ForumFollower", fields: [subscribersId], references: [id])
+  subscribersId String[]        @db.ObjectId
+  slug          String          @unique
 }
 
 model Topic {
@@ -126,13 +126,17 @@ model Tag {
 }
 
 model Post {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   comment   String
-  user      Profile @relation(fields: [profileId], references: [id])
-  profileId String  @db.ObjectId
+  user      Profile  @relation(fields: [profileId], references: [id])
+  profileId String   @db.ObjectId
   likes     Like[]
-  Topic     Topic   @relation(fields: [topicId], references: [id])
-  topicId   String  @db.ObjectId
+  topic     Topic    @relation(fields: [topicId], references: [id])
+  topicId   String   @db.ObjectId
+  replies   Post[]   @relation(name: "PostReplies")
+  replyIds  String[] @db.ObjectId
+  post      Post?    @relation("PostReplies", fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  postId    String?  @db.ObjectId
 }
 
 model ForumPermission {

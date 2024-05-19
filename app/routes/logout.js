@@ -1,4 +1,4 @@
-import { json } from '@remix-run/node';
+import { json } from '@remix-run/react';
 import { getUserFromSession, logoutUser } from '../utils/auth.server';
 
 export const action = async ({ request }) => {

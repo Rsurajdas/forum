@@ -1,25 +1,42 @@
-import { Link, json, useLoaderData, useParams } from "@remix-run/react"
-import { getForumBySlug } from "../utils/forum.server"
+import { Link, json, useFetcher, useLoaderData, useParams } from "@remix-run/react"
+import { followForum, getForumBySlug } from "../utils/forum.server"
 import { Badge } from "@mantine/core"
 import { IconRss } from "@tabler/icons-react"
 import TopicList from "../components/client/TopicList"
 import { getTagsByForum } from "../utils/tag.server"
+import { getUserFromSession } from "../utils/auth.server"
+import { useEffect, useState } from "react"
 
 // eslint-disable-next-line no-unused-vars
 export const loader = async ({ request, params }) => {
   const { slug } = params
 
-  return json({ forum: await getForumBySlug(slug), tags: await getTagsByForum(slug) })
+  return json({ forum: await getForumBySlug(slug), tags: await getTagsByForum(slug), profileId: await getUserFromSession(request) })
 }
 
 export default function SingleForumPage() {
-  const { forum, tags } = useLoaderData()
+  const { forum, tags, profileId } = useLoaderData()
   const { slug } = useParams()
+  const fetcher = useFetcher()
+  const [isFollowing, setIsFollowing] = useState(false)
+
+  const handleFollowForum = () => {
+    fetcher.submit(null, {
+      method: "PATCH"
+    })
+    setIsFollowing(prevState => !prevState)
+  }
+
+  useEffect(() => {
+    if (forum.followerIds.some(id => id === profileId)) {
+      setIsFollowing(true)
+    }
+  }, [forum.followerIds, profileId])
 
   return (
     <>
-      <div>
-        <h1 className="text-3xl text-gray-900 mb-2">{forum.title}</h1>
+      <div className="mb-2">
+        <h1 className="text-3xl text-gray-900">{forum.title}</h1>
         <p className="text-sm text-stone-600">{forum.description}</p>
       </div>
       <div className="flex mt-6 gap-x-2">
@@ -27,27 +44,51 @@ export default function SingleForumPage() {
           <Link to={`/${tag.id}`} key={tag.id}>
             <Badge color="violet" size="lg">{tag.title}
             </Badge>
-          </Link>))}
+          </Link>
+        ))}
       </div>
-      <div className="flex mt-6 w-full justify-between border-b border-gray-200 pb-4">
-        {forum?.permissions?.createTopic ? <Link to={`/forums/${slug}/topic/create`} className="bg-indigo-700 text-white py-2 px-4 text-sm rounded-sm transition-all ease-in active:translate-y-1">
+      <div className="flex mt-10 w-full justify-between border-b border-gray-200 pb-4">
+        {forum?.permissions.createTopic ? <Link to={`/forums/${slug}/topic/create`} className="bg-indigo-700 text-white py-2 px-4 text-sm rounded-sm transition-all ease-in active:translate-y-1">
           Create topic
         </Link> : null}
         <div className="flex gap-2">
           <div className="border bg-transparent border-gray-400 flex items-center justify-center px-2 rounded-md gap-x-1 text-stone-600">
-            <strong className="text-indigo-700">{forum.topics.length}</strong> Topics
+            <strong className="text-indigo-700">{forum?._count.topics}</strong> Topics
           </div>
           <div className="border bg-transparent border-gray-400 flex items-center justify-center px-2 rounded-md gap-x-1 text-stone-600">
-            <strong className="text-indigo-700">{forum?.followerIds.length}</strong> Followers
+            <strong className="text-indigo-700">{forum?._count.followers}</strong> Followers
           </div>
-          <button className="border bg-indigo-700 border-indigo-700 flex items-center justify-center px-2 rounded-md gap-x-1 text-white">
-            <IconRss /> Follow
+          <button
+            className="border bg-indigo-700 border-indigo-700 flex items-center justify-center px-2 rounded-md gap-x-1 text-white"
+            onClick={() => handleFollowForum()}
+          >
+            <IconRss /> {isFollowing ? "Following" : "Follow"}
           </button>
         </div>
       </div>
       <div className="flex flex-col">
-        {forum?.topics.map(topic => <TopicList key={topic?.id} title={topic?.title} user={topic?.user.name} createdAt="17h" posts={topic?.posts.length} profileId={topic?.user.id} views={topic.views} />)}
+        {forum?.topics.map(topic => (
+          <TopicList
+            key={topic?.id}
+            title={topic?.title}
+            user={topic?.user.name}
+            createdAt="17h"
+            posts={topic?._count.posts}
+            profileId={topic?.user.id}
+            views={topic?.views}
+            slug={topic?.slug}
+            tags={topic.tags}
+            forumSlug={slug}
+          />
+        ))}
       </div>
     </>
   )
+}
+
+export const action = async ({ request, params }) => {
+  const { slug } = params
+  const profileId = await getUserFromSession(request)
+
+  return await followForum(slug, profileId)
 }

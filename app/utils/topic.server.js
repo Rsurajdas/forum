@@ -1,8 +1,8 @@
 import slugify from 'slugify';
 import { prisma } from './database.server';
-import { redirect } from '@remix-run/react';
+import { redirect } from '@remix-run/node';
 
-export const createTopic = async (profileId, slug, data) => {
+export const createTopic = async (profileId, forumSlug, data) => {
   try {
     if (!data.title) {
       const error = new Error('Invalid title, title must not be empty.');
@@ -18,7 +18,7 @@ export const createTopic = async (profileId, slug, data) => {
 
     const forum = await prisma.forum.findUnique({
       where: {
-        slug: slug,
+        slug: forumSlug,
       },
       select: {
         id: true,
@@ -30,7 +30,7 @@ export const createTopic = async (profileId, slug, data) => {
       },
     });
 
-    if (!forum) {
+    if (!forumSlug) {
       const error = new Error('Invalid forumId, forumId must not be empty.');
       error.statusCode = 404;
       throw error;
@@ -73,9 +73,80 @@ export const createTopic = async (profileId, slug, data) => {
       },
     });
 
-    return redirect(`/forums/${slug}`);
+    return redirect(`/forums/${forumSlug}`);
   } catch (error) {
     console.log(`Error Occured: ${error.message}`);
+
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+export const getTopicBySlug = async (slug) => {
+  try {
+    const topic = await prisma.topic.findUnique({
+      where: {
+        slug: slug,
+      },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        createdAt: true,
+        file: true,
+        islock: true,
+        tags: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        posts: {
+          select: {
+            id: true,
+            comment: true,
+            createdAt: true,
+            _count: {
+              select: {
+                likes: true,
+              },
+            },
+            likes: {
+              select: {
+                id: true,
+                profile: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+            user: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        _count: {
+          select: {
+            posts: true,
+            likes: true,
+          },
+        },
+      },
+    });
+  } catch (error) {
+    console.log(`Error: ${error.message}`);
 
     throw error;
   } finally {

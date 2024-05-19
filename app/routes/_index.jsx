@@ -29,7 +29,6 @@ export default function Index() {
   }
   return (
     <>
-      {console.log(profileId)}
       <main className="mt-14">
         <section className="py-12">
           <div className="xl:container">

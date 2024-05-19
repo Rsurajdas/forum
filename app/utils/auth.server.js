@@ -31,13 +31,13 @@ export const getUserFromSession = async (request) => {
   const session = await sessionStorage.getSession(
     request.headers.get('Cookie')
   );
-  const userId = session.get('profileId');
+  const profileId = session.get('profileId');
 
-  if (!userId) {
+  if (!profileId) {
     return null;
   }
 
-  return userId;
+  return profileId;
 };
 
 export const requireUserSession = async (request) => {
