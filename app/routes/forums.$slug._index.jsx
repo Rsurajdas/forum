@@ -11,7 +11,13 @@ import { useEffect, useState } from "react"
 export const loader = async ({ request, params }) => {
   const { slug } = params
 
-  return json({ forum: await getForumBySlug(slug), tags: await getTagsByForum(slug), profileId: await getUserFromSession(request) })
+  return json(
+    {
+      forum: await getForumBySlug(slug),
+      tags: await getTagsByForum(slug),
+      profileId: await getUserFromSession(request)
+    }
+  )
 }
 
 export default function SingleForumPage() {
@@ -28,16 +34,16 @@ export default function SingleForumPage() {
   }
 
   useEffect(() => {
-    if (forum.followerIds.some(id => id === profileId)) {
+    if (forum.subscribersId.some(id => id === profileId)) {
       setIsFollowing(true)
     }
-  }, [forum.followerIds, profileId])
+  }, [forum.subscribersId, profileId])
 
   return (
     <>
       <div className="mb-2">
         <h1 className="text-3xl text-gray-900">{forum.title}</h1>
-        <p className="text-sm text-stone-600">{forum.description}</p>
+        <p className="text-sm text-stone-600 mt-3">{forum.description}</p>
       </div>
       <div className="flex mt-6 gap-x-2">
         {tags?.map(tag => (
@@ -48,15 +54,22 @@ export default function SingleForumPage() {
         ))}
       </div>
       <div className="flex mt-10 w-full justify-between border-b border-gray-200 pb-4">
-        {forum?.permissions.createTopic ? <Link to={`/forums/${slug}/topic/create`} className="bg-indigo-700 text-white py-2 px-4 text-sm rounded-sm transition-all ease-in active:translate-y-1">
-          Create topic
-        </Link> : null}
+        {forum?.permissions.createTopic
+          ? (
+            <Link to={`/forums/${slug}/topic/create`} className="bg-indigo-700 text-white py-2 px-4 text-sm rounded-sm transition-all ease-in active:translate-y-1">
+              Create topic
+            </Link>)
+          : null
+        }
         <div className="flex gap-2">
           <div className="border bg-transparent border-gray-400 flex items-center justify-center px-2 rounded-md gap-x-1 text-stone-600">
             <strong className="text-indigo-700">{forum?._count.topics}</strong> Topics
           </div>
           <div className="border bg-transparent border-gray-400 flex items-center justify-center px-2 rounded-md gap-x-1 text-stone-600">
-            <strong className="text-indigo-700">{forum?._count.followers}</strong> Followers
+            <strong className="text-indigo-700">
+              {forum?._count.subscribers}
+            </strong>
+            Followers
           </div>
           <button
             className="border bg-indigo-700 border-indigo-700 flex items-center justify-center px-2 rounded-md gap-x-1 text-white"

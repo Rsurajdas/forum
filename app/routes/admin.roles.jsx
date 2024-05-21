@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Table, Checkbox, Title, TextInput, Textarea, Tooltip } from '@mantine/core';
+import { Table, Title, TextInput, Textarea, Tooltip } from '@mantine/core';
 import { Form, json, useActionData, useFetcher, useLoaderData, useMatches, useSubmit } from '@remix-run/react';
 import { createUpdateRole, getAllRoles } from '../utils/roles.server';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
@@ -9,7 +9,6 @@ export const loader = async () => {
 }
 
 export default function RolesPage() {
-  const [selectedRows, setSelectedRows] = useState([]);
   const { roles } = useLoaderData()
   const submit = useSubmit()
   const fetcher = useFetcher()
@@ -78,7 +77,6 @@ export default function RolesPage() {
         <Table highlightOnHover withTableBorder withColumnBorders >
           <Table.Thead>
             <Table.Tr>
-              <Table.Th />
               <Table.Th>Title</Table.Th>
               <Table.Th>Description</Table.Th>
               <Table.Th>Users</Table.Th>
@@ -89,25 +87,7 @@ export default function RolesPage() {
             {roles.map((element) => (
               <Table.Tr
                 key={element.id}
-                bg={
-                  selectedRows.includes(element.id)
-                    ? 'var(--mantine-color-indigo-light)'
-                    : undefined
-                }
               >
-                <Table.Td>
-                  <Checkbox
-                    aria-label="Select row"
-                    checked={selectedRows.includes(element.id)}
-                    onChange={(event) =>
-                      setSelectedRows(
-                        event.currentTarget.checked
-                          ? [...selectedRows, element.id]
-                          : selectedRows.filter((id) => id !== element.id)
-                      )
-                    }
-                  />
-                </Table.Td>
                 <Table.Td>{element.title}</Table.Td>
                 <Table.Td>{element.description}</Table.Td>
                 <Table.Td>{element.profileId.length}</Table.Td>

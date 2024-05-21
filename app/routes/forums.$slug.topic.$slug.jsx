@@ -1,18 +1,30 @@
 import { Avatar, Badge, Button, Popover } from "@mantine/core"
-import { Link } from "@remix-run/react"
+import { Link, json, useLoaderData } from "@remix-run/react"
 import { IconDotsVertical, IconThumbUp } from "@tabler/icons-react"
 import DetailLabel from "../components/client/DetailLabel"
+import { getTopicBySlug } from "../utils/topic.server"
+
+// eslint-disable-next-line no-unused-vars
+export const loader = async ({ request, params }) => {
+  const { slug } = params
+  return json(
+    {
+      topic: await getTopicBySlug(slug)
+    }
+  )
+}
 
 export default function TopicIndex() {
-  const { topic } = {}
-  const tags = [{ id: 1, title: "tags" }]
+  const { topic } = useLoaderData()
+
   return (
     <>
+      {console.log(topic)}
       <div>
-        <h1 className="text-3xl text-gray-900">{topic?.title || 'title'}</h1>
+        <h1 className="text-3xl text-gray-900">{topic?.title}</h1>
       </div>
       <div className="flex mt-4 gap-x-2">
-        {tags?.map(tag => (
+        {topic.tags?.map(tag => (
           <Link to={`/${tag?.id}`} key={tag?.id}>
             <Badge color="violet" size="lg">{tag?.title}
             </Badge>
@@ -20,16 +32,18 @@ export default function TopicIndex() {
         ))}
       </div>
       <div className="flex mt-8 gap-x-4 border-b border-gray-300 pb-6">
-        <Avatar variant='default' color='orange' size="lg">SK</Avatar>
+        <Avatar variant='default' color='orange' size="lg">{topic.user.name.slice(0, "ww".length)}</Avatar>
         <div className="flex flex-col">
           <div className="text-gray-700">
             <div className=" mb-6">
               <Link to="/">
-                <h3>Suraj kumar</h3>
+                <h3>{topic.posts[0].user.name}</h3>
               </Link>
               <span>13d</span>
             </div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quisquam? Repudiandae, excepturi? Fugit cumque, a esse nulla quidem inventore, quos praesentium blanditiis architecto, enim earum libero et culpa accusamus quae.</p>
+            <div className="">
+              {topic.posts[0].comment}
+            </div>
           </div>
           <div className="flex mt-20 justify-end gap-x-2">
             <div className="">

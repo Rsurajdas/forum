@@ -96,6 +96,29 @@ export const getAllFolders = async () => {
   }
 };
 
+export const getAllFoldersNames = async () => {
+  try {
+    const folders = await prisma.folder.findMany({
+      select: {
+        id: true,
+        title: true,
+        position: true,
+      },
+      orderBy: {
+        position: 'asc',
+      },
+    });
+
+    return folders;
+  } catch (error) {
+    console.log(`Error occurred: ${error.message}`);
+
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
 export const getFolderBySlug = async (slug) => {
   try {
     const folder = await prisma.folder.findUnique({

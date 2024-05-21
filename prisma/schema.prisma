@@ -137,6 +137,7 @@ model Post {
   replyIds  String[] @db.ObjectId
   post      Post?    @relation("PostReplies", fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   postId    String?  @db.ObjectId
+  createdAt DateTime @default(now())
 }
 
 model ForumPermission {

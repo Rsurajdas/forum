@@ -3,12 +3,12 @@ import { Form, json, useLoaderData, useNavigate, useNavigation } from "@remix-ru
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useState } from "react";
 import { getAllRegistedUser } from "../utils/user.server";
-import { getAllFolders } from "../utils/folder.server";
+import { getAllFoldersNames } from "../utils/folder.server";
 import { getUserFromSession } from "../utils/auth.server";
 import { createForum } from "../utils/forum.server";
 
 export const loader = async () => {
-  return json({ users: await getAllRegistedUser(), folders: await getAllFolders() })
+  return json({ users: await getAllRegistedUser(), folders: await getAllFoldersNames() })
 }
 
 export default function ForumCreatePage() {

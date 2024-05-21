@@ -96,6 +96,11 @@ export const getTopicBySlug = async (slug) => {
         createdAt: true,
         file: true,
         islock: true,
+        forum: {
+          select: {
+            permissions: true,
+          },
+        },
         tags: {
           select: {
             id: true,
@@ -116,6 +121,18 @@ export const getTopicBySlug = async (slug) => {
             _count: {
               select: {
                 likes: true,
+              },
+            },
+            replies: {
+              select: {
+                id: true,
+                comment: true,
+                createdAt: true,
+                _count: {
+                  select: {
+                    likes: true,
+                  },
+                },
               },
             },
             likes: {
@@ -145,6 +162,8 @@ export const getTopicBySlug = async (slug) => {
         },
       },
     });
+
+    return topic;
   } catch (error) {
     console.log(`Error: ${error.message}`);
 

@@ -105,7 +105,7 @@ export const getForumBySlug = async (slug) => {
         status: true,
         position: true,
         slug: true,
-        followerIds: true,
+        subscribersId: true,
         permissions: {
           select: {
             createTopic: true,
@@ -114,7 +114,7 @@ export const getForumBySlug = async (slug) => {
         _count: {
           select: {
             topics: true,
-            followers: true,
+            subscribers: true,
           },
         },
         topics: {
