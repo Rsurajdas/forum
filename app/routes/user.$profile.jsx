@@ -4,7 +4,7 @@ import PostCard from '../components/dashboard/PostCard';
 import { IconMoodSmile } from '@tabler/icons-react';
 import { getProfile } from '../utils/profile.server';
 import { useLoaderData } from '@remix-run/react';
-import date from "date-and-time"
+import TimeAgo from '../components/client/TimeAgo';
 
 // eslint-disable-next-line no-unused-vars
 export const loader = ({ request, params }) => {
@@ -42,7 +42,7 @@ export default function ProfilePage() {
             </div>
             <div className="text-sm mb-5 flex items-center justify-center gap-x-2">
               <p>
-                Joined at <span className="font-bold">{Math.round(date.subtract(new Date(Date.now()), new Date(profile?.user.createdAt)).toHours())}hours ago</span>
+                Joined at <TimeAgo date={profile?.user.createdAt} />
               </p>
               {!profile?.isUserLive ? <>
                 <span>|</span>

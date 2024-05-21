@@ -83,14 +83,7 @@ export default function SingleForumPage() {
         {forum?.topics.map(topic => (
           <TopicList
             key={topic?.id}
-            title={topic?.title}
-            user={topic?.user.name}
-            createdAt="17h"
-            posts={topic?._count.posts}
-            profileId={topic?.user.id}
-            views={topic?.views}
-            slug={topic?.slug}
-            tags={topic.tags}
+            topic={topic}
             forumSlug={slug}
           />
         ))}

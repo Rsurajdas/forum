@@ -123,6 +123,7 @@ export const getForumBySlug = async (slug) => {
             title: true,
             slug: true,
             views: true,
+            createdAt: true,
             _count: {
               select: {
                 posts: true,

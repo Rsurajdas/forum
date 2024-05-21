@@ -113,7 +113,9 @@ model Topic {
   file      String?
   likes     Like[]
   slug      String   @unique
-  posts     Post[]
+  post      Post?    @relation("Post")
+  postId    String?  @db.ObjectId
+  replies   Post[]   @relation("Replies")
   createdAt DateTime @default(now())
   views     Int?
 }
@@ -126,18 +128,20 @@ model Tag {
 }
 
 model Post {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  comment   String
-  user      Profile  @relation(fields: [profileId], references: [id])
-  profileId String   @db.ObjectId
-  likes     Like[]
-  topic     Topic    @relation(fields: [topicId], references: [id])
-  topicId   String   @db.ObjectId
-  replies   Post[]   @relation(name: "PostReplies")
-  replyIds  String[] @db.ObjectId
-  post      Post?    @relation("PostReplies", fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  postId    String?  @db.ObjectId
-  createdAt DateTime @default(now())
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  comment        String
+  user           Profile  @relation(fields: [profileId], references: [id])
+  profileId      String   @db.ObjectId
+  likes          Like[]
+  topic          Topic    @relation("Post", fields: [topicId], references: [id])
+  topicId        String   @unique @db.ObjectId
+  replies        Post[]   @relation(name: "PostReplies")
+  replyIds       String[] @db.ObjectId
+  post           Post?    @relation("PostReplies", fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  postId         String?  @db.ObjectId
+  createdAt      DateTime @default(now())
+  topicReplies   Topic    @relation("Replies", fields: [topicRepliesId], references: [id])
+  topicRepliesId String   @db.ObjectId
 }
 
 model ForumPermission {
