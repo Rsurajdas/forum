@@ -54,7 +54,7 @@ export const createTopic = async (profileId, forumSlug, data) => {
             id: profileId,
           },
         },
-        posts: {
+        post: {
           create: {
             comment: data.content,
             user: { connect: { id: profileId } },
@@ -113,7 +113,7 @@ export const getTopicBySlug = async (slug) => {
             name: true,
           },
         },
-        posts: {
+        post: {
           select: {
             id: true,
             comment: true,
@@ -150,6 +150,18 @@ export const getTopicBySlug = async (slug) => {
               select: {
                 id: true,
                 name: true,
+              },
+            },
+          },
+        },
+        replies: {
+          select: {
+            id: true,
+            comment: true,
+            createdAt: true,
+            _count: {
+              select: {
+                likes: true,
               },
             },
           },

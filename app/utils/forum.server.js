@@ -126,7 +126,7 @@ export const getForumBySlug = async (slug) => {
             createdAt: true,
             _count: {
               select: {
-                posts: true,
+                replies: true,
               },
             },
             user: {
