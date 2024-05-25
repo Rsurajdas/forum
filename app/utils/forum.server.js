@@ -126,7 +126,7 @@ export const getForumBySlug = async (slug) => {
             createdAt: true,
             _count: {
               select: {
-                replies: true,
+                posts: true,
               },
             },
             user: {
@@ -163,7 +163,7 @@ export const getForumBySlug = async (slug) => {
   }
 };
 
-export const followForum = async (slug, profileId) => {
+export const followUnfollowForum = async (slug, profileId) => {
   try {
     if (!profileId) {
       console.log('Please login to follow');

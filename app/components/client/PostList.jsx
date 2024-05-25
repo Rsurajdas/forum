@@ -1,11 +1,22 @@
 import { Avatar, Button, Popover } from "@mantine/core";
 import TimeAgo from "./TimeAgo";
 import { IconDotsVertical, IconThumbUp } from "@tabler/icons-react";
-import { Link } from "@remix-run/react";
+import { Link, useFetcher } from "@remix-run/react";
 import parse from 'html-react-parser';
 
 
-export default function PostList({ post }) {
+
+export default function PostList({ post, isLiked, setIsLikes }) {
+  const fetcher = useFetcher()
+
+  const handleLike = () => {
+    fetcher.submit(null, {
+      method: "PATCH",
+      action: `/forums/${post.forum.slug}/topic/${post.slug}`
+    })
+    setIsLikes(prevState => !prevState)
+  }
+
   return (
     <div className="flex mt-8 gap-x-4 border-b border-gray-300 pb-6">
       <Avatar variant='default' color='orange' size="lg">{post.user.name.slice(0, "ww".length)}</Avatar>
@@ -18,13 +29,13 @@ export default function PostList({ post }) {
             <TimeAgo date={post.createdAt} />
           </div>
           <div className="topic-content">
-            {parse(post.comment)}
+            {parse(post.comment || post.description)}
           </div>
         </div>
         <div className="flex mt-20 justify-end gap-x-2">
           <div className="">
             <small className="text-gray-500 inline-block mr-2">{post._count.likes} likes</small>
-            <Button variant="default" size="sm">
+            <Button variant={isLiked ? "filled" : "default"} size="sm" color="indigo" onClick={handleLike}>
               <IconThumbUp stroke={1.5} />
             </Button>
           </div>
@@ -33,7 +44,7 @@ export default function PostList({ post }) {
           </Button>
           <Popover width={200} trapFocus position="top-end">
             <Popover.Target>
-              <Button variant="default" size="sm">
+              <Button variant="default" size="sm" >
                 <IconDotsVertical />
               </Button>
             </Popover.Target>

@@ -41,6 +41,7 @@ export const createTopic = async (profileId, forumSlug, data) => {
     await prisma.topic.create({
       data: {
         title: data.title,
+        description: data.content,
         slug: slugify(data.title, { lower: true }),
         forum: {
           connect: {
@@ -52,12 +53,6 @@ export const createTopic = async (profileId, forumSlug, data) => {
         user: {
           connect: {
             id: profileId,
-          },
-        },
-        post: {
-          create: {
-            comment: data.content,
-            user: { connect: { id: profileId } },
           },
         },
         tags: {
@@ -87,11 +82,12 @@ export const getTopicBySlug = async (slug) => {
   try {
     const topic = await prisma.topic.findUnique({
       where: {
-        slug: slug,
+        slug,
       },
       select: {
         id: true,
         title: true,
+        description: true,
         slug: true,
         createdAt: true,
         file: true,
@@ -99,6 +95,7 @@ export const getTopicBySlug = async (slug) => {
         forum: {
           select: {
             permissions: true,
+            slug: true,
           },
         },
         tags: {
@@ -113,7 +110,7 @@ export const getTopicBySlug = async (slug) => {
             name: true,
           },
         },
-        post: {
+        posts: {
           select: {
             id: true,
             comment: true,
@@ -154,22 +151,22 @@ export const getTopicBySlug = async (slug) => {
             },
           },
         },
-        replies: {
-          select: {
-            id: true,
-            comment: true,
-            createdAt: true,
-            _count: {
-              select: {
-                likes: true,
-              },
-            },
-          },
-        },
         _count: {
           select: {
             posts: true,
             likes: true,
+          },
+        },
+        likes: {
+          select: {
+            id: true,
+            profile: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            profileId: true,
           },
         },
       },

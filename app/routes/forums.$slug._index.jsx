@@ -1,5 +1,5 @@
 import { Link, json, useFetcher, useLoaderData, useParams } from "@remix-run/react"
-import { followForum, getForumBySlug } from "../utils/forum.server"
+import { followUnfollowForum, getForumBySlug } from "../utils/forum.server"
 import { Badge } from "@mantine/core"
 import { IconRss } from "@tabler/icons-react"
 import TopicList from "../components/client/TopicList"
@@ -95,6 +95,5 @@ export default function SingleForumPage() {
 export const action = async ({ request, params }) => {
   const { slug } = params
   const profileId = await getUserFromSession(request)
-
-  return await followForum(slug, profileId)
+  return await followUnfollowForum(slug, profileId)
 }

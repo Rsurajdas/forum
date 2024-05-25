@@ -112,11 +112,11 @@ model Topic {
   tags        Tag[]    @relation(fields: [tagsId], references: [id])
   tagsId      String[] @db.ObjectId
   file        String?
-  likes       Like[]
   slug        String   @unique
   posts       Post[]
   createdAt   DateTime @default(now())
   views       Int?
+  likes       Like[]
 }
 
 model Tag {

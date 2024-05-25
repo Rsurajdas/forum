@@ -3,20 +3,29 @@ import { Link, json, useLoaderData } from "@remix-run/react"
 import DetailLabel from "../components/client/DetailLabel"
 import { getTopicBySlug } from "../utils/topic.server"
 import PostList from "../components/client/PostList";
+import { getUserFromSession } from "../utils/auth.server";
+import { useEffect, useState } from "react";
+import { likeDisLikeTopic } from "../utils/like.server";
 
-// eslint-disable-next-line no-unused-vars
 export const loader = async ({ request, params }) => {
   const { slug } = params
   return json(
     {
-      topic: await getTopicBySlug(slug)
+      topic: await getTopicBySlug(slug),
+      profileId: await getUserFromSession(request)
     }
   )
 }
 
 export default function TopicIndex() {
-  const { topic } = useLoaderData()
-  const [mainPost, ...posts] = topic.posts
+  const { topic, profileId } = useLoaderData()
+  const [isLiked, setIsLikes] = useState(false)
+
+  useEffect(() => {
+    if (topic.likes.some(like => like.profileId === profileId)) {
+      setIsLikes(true)
+    }
+  }, [profileId, topic.likes])
 
   return (
     <>
@@ -31,7 +40,7 @@ export default function TopicIndex() {
           </Link>
         ))}
       </div>
-      <PostList post={mainPost} />
+      <PostList post={topic} isLiked={isLiked} setIsLikes={setIsLikes} />
       <div className="flex items-center justify-end gap-x-4 py-4 border-b border-gray-300">
         <DetailLabel title="Posts" value={0} />
         <DetailLabel title="Views" value={0} />
@@ -39,7 +48,16 @@ export default function TopicIndex() {
         <Button variant="default">edit</Button>
         <Button variant="filled" color="red">delete</Button>
       </div>
-      {posts.length ? posts.map(post => <PostList post={post} key={post.id} />) : null}
+      {topic.posts.length
+        ? topic.posts.map(post => <PostList post={post} key={post.id} />)
+        : null
+      }
     </>
   )
+}
+
+export const action = async ({ request, params }) => {
+  const profileId = await getUserFromSession(request)
+  const { slug } = params
+  return await likeDisLikeTopic(slug, profileId)
 }
